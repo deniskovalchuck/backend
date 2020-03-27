@@ -1,5 +1,5 @@
 <?php
-namespace App\Core\helpers;
+namespace Core\helpers;
 
 //статический класс для работы с конфигурациями бэкендa
 class Config{
@@ -8,14 +8,15 @@ class Config{
     /**
      * инициализация в память конфигов
      */
-    private static function init()
+    public static function init()
     {
         if (self::$initialized)
         return;
         self::$initialized = true;
         self::$ConfigData['app']=require AppDir.'/configs/app.php';
         self::$ConfigData['database']=require AppDir.'/configs/database.php';
-        self::$ConfigData['keys']=require AppDir.'/keys/database.php';
+        self::$ConfigData['keys']=require AppDir.'/configs/keys.php';
+        var_dump(self::$ConfigData);
     }
     /**
      * получает значение конфигурации по ключу вида "файл"."ключ"
@@ -24,7 +25,6 @@ class Config{
     public static function get($key)
     {
         self::initialize();
-
     }
 
 }

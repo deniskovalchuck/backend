@@ -1,7 +1,6 @@
 <?php
-/**
- * Инициализация ядра бэкенд и всех функций
- * Json Web Token
- * Маршрутизация
- * Config
-*/
+
+include '../namespaces.php';
+include AppDir.'/Core/helpers/Autoloader.php';
+
+

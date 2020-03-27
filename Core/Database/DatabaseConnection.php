@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Core\Database;
+namespace Core\Database;
 
-use App\Core\helpers;
 //класс базы данных
 class Database{
 
