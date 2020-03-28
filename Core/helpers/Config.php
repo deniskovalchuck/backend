@@ -13,10 +13,16 @@ class Config{
         if (self::$initialized)
         return;
         self::$initialized = true;
-        self::$ConfigData['app']=require AppDir.'/configs/app.php';
-        self::$ConfigData['database']=require AppDir.'/configs/database.php';
-        self::$ConfigData['keys']=require AppDir.'/configs/keys.php';
-        var_dump(self::$ConfigData);
+        foreach ( ConfigsPath as $key => $value )
+        {
+            try {
+                self::$ConfigData[$key]=require AppDir.'/configs/'.$value;
+            }
+            catch (\Exception $ex)
+            {
+                die('Error loading file: '.$value. ' with error '.$ex->getMessage());
+            }
+        }
     }
     /**
      * получает значение конфигурации по ключу вида "файл"."ключ"
