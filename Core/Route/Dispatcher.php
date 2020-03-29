@@ -2,6 +2,7 @@
 
 use Core\Route\Exception\HttpMethodNotAllowedException;
 use Core\Route\Exception\HttpRouteNotFoundException;
+use function Couchbase\basicEncoderV1;
 
 class Dispatcher {
 
@@ -48,34 +49,32 @@ class Dispatcher {
 
         list($beforeFilter, $afterFilter) = $this->parseFilters($filters);
 
-        if(($response = $this->dispatchFilters($beforeFilter)) !== null)
+        if($this->dispatchFilters($beforeFilter,$httpMethod,$uri)===false)
         {
-            return $response;
+            return false;
         }
-        
         $resolvedHandler = $this->handlerResolver->resolve($handler);
         
         $response = call_user_func_array($resolvedHandler, $vars);
 
-        return $this->dispatchFilters($afterFilter, $response);
+        return $this->dispatchFilters($afterFilter,$httpMethod,$uri, $response);
     }
 
     /**
      * Dispatch a route filter.
      *
      * @param $filters
+     * @param $httpMethod
      * @param null $response
      * @return mixed|null
      */
-    private function dispatchFilters($filters, $response = null)
+    private function dispatchFilters($filters,$httpMethod,$uri, $response = null)
     {
         while($filter = array_shift($filters))
         {
-        	$handler = $this->handlerResolver->resolve($filter);
-        	
-            if(($filteredResponse = call_user_func($handler, $response)) !== null)
+            if($filter::handle($httpMethod,$uri)==false)
             {
-                return $filteredResponse;
+                return false;
             }
         }
         
@@ -112,8 +111,18 @@ class Dispatcher {
         {
             return $this->dispatchStaticRoute($httpMethod, $uri);
         }
-        
-        return $this->dispatchVariableRoute($httpMethod, $uri);
+        try {
+            return $this->dispatchVariableRoute($httpMethod, $uri);
+
+        }
+        catch (HttpRouteNotFoundException $exception)
+        {
+            if (isset($this->staticRouteMap['*']))
+                return $this->dispatchStaticRoute($httpMethod, '*');
+            else
+                throw new HttpMethodNotAllowedException('404');
+
+        }
     }
 
     /**
@@ -132,7 +141,6 @@ class Dispatcher {
         {
             $httpMethod = $this->checkFallbacks($routes, $httpMethod);
         }
-        
         return $routes[$httpMethod];
     }
 
@@ -159,9 +167,7 @@ class Dispatcher {
                 return $method;
             }
         }
-        
         $this->matchedRoute = $routes;
-        
         throw new HttpMethodNotAllowedException('Allow: ' . implode(', ', array_keys($routes)));
     }
 

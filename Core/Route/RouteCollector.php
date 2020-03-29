@@ -125,7 +125,6 @@ class RouteCollector implements RouteDataProviderInterface {
         {
             $this->reverse[$name] = $reverseData;
         }
-        
         $filters = array_merge_recursive($this->globalFilters, $filters);
 
         isset($routeData[1]) ? 
@@ -225,6 +224,12 @@ class RouteCollector implements RouteDataProviderInterface {
     {
         return $this->addRoute(Route::GET, $route, $handler, $filters);
     }
+    public function getController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::GET, $route,[$classname[0],$classname[1]], $filters);
+
+    }
 
     /**
      * @param $route
@@ -235,6 +240,11 @@ class RouteCollector implements RouteDataProviderInterface {
     public function head($route, $handler, array $filters = [])
     {
         return $this->addRoute(Route::HEAD, $route, $handler, $filters);
+    }
+    public function headController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::HEAD, $route,[$classname[0],$classname[1]], $filters);
     }
 
     /**
@@ -247,6 +257,11 @@ class RouteCollector implements RouteDataProviderInterface {
     {
         return $this->addRoute(Route::POST, $route, $handler, $filters);
     }
+    public function postController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::POST, $route,[$classname[0],$classname[1]], $filters);
+    }
 
     /**
      * @param $route
@@ -257,6 +272,11 @@ class RouteCollector implements RouteDataProviderInterface {
     public function put($route, $handler, array $filters = [])
     {
         return $this->addRoute(Route::PUT, $route, $handler, $filters);
+    }
+    public function putController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::PUT, $route,[$classname[0],$classname[1]], $filters);
     }
 
     /**
@@ -269,6 +289,11 @@ class RouteCollector implements RouteDataProviderInterface {
     {
         return $this->addRoute(Route::PATCH, $route, $handler, $filters);
     }
+    public function patchController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::PATCH, $route,[$classname[0],$classname[1]], $filters);
+    }
 
     /**
      * @param $route
@@ -279,6 +304,11 @@ class RouteCollector implements RouteDataProviderInterface {
     public function delete($route, $handler, array $filters = [])
     {
         return $this->addRoute(Route::DELETE, $route, $handler, $filters);
+    }
+    public function deleteController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::DELETE, $route,[$classname[0],$classname[1]], $filters);
     }
 
     /**
@@ -291,6 +321,11 @@ class RouteCollector implements RouteDataProviderInterface {
     {
         return $this->addRoute(Route::OPTIONS, $route, $handler, $filters);
     }
+    public function optionsController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::OPTIONS, $route,[$classname[0],$classname[1]], $filters);
+    }
 
     /**
      * @param $route
@@ -301,6 +336,11 @@ class RouteCollector implements RouteDataProviderInterface {
     public function any($route, $handler, array $filters = [])
     {
         return $this->addRoute(Route::ANY, $route, $handler, $filters);
+    }
+    public function anyController($route, $classname, array $filters = [])
+    {
+        $classname = explode("@", $classname);
+        return $this->addRoute(Route::ANY, $route,[$classname[0],$classname[1]], $filters);
     }
 
     /**
@@ -319,24 +359,24 @@ class RouteCollector implements RouteDataProviderInterface {
 
         foreach($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method)
         {
-            foreach($validMethods as $valid)
+           foreach($validMethods as $valid)
             {
+
                 if(stripos($method->name, $valid) === 0)
                 {
                     $methodName = $this->camelCaseToDashed(substr($method->name, strlen($valid)));
-
                     $params = $this->buildControllerParameters($method);
-
                     if($methodName === self::DEFAULT_CONTROLLER_ROUTE)
                     {
                         $this->addRoute($valid, $route . $params, [$classname, $method->name], $filters);
                     }
 
                     $this->addRoute($valid, $route . $sep . $methodName . $params, [$classname, $method->name], $filters);
-                    
+
                     break;
                 }
             }
+
         }
         
         return $this;

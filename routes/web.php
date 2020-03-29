@@ -1,5 +1,12 @@
 <?php
+$router->any('/', function ()
+{
+    return  '1';
+},['before'=>'auth']);
 
-$router->any('/', function(){
-    return 'This route responds to any method (POST, GET, DELETE, OPTIONS, HEAD etc...) at the path /example';
+//маршрут по умолчанию
+$router->any('*', function ()
+{
+    return  '404s';
 });
+
