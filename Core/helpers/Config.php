@@ -13,7 +13,7 @@ class Config{
         if (self::$initialized)
         return;
         self::$initialized = true;
-        foreach ( ConfigsPath as $key => $value )
+        foreach ( ConfigsAlias as $key => $value )
         {
             try {
                 self::$ConfigData[$key]=require AppDir.'/configs/'.$value;
