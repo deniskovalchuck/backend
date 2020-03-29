@@ -30,7 +30,15 @@ class Config{
      */
     public static function get($key)
     {
-        self::initialize();
+        self::init();
+        $values = explode(".", $key);
+
+        $result = Config::$ConfigData;
+        foreach ($values as $item)
+        {
+            $result = $result[$item];
+        }
+        return $result;
     }
 
 }
