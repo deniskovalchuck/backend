@@ -54,4 +54,16 @@ class Teacher{
         }
         return $teacher_array;
     }
+
+    public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $input_email, $photo_input_teacher){
+        $result = $connection->query('add_teacher('.$name_input_teacher.','.$second_name_input_teacher.','.$third_name_input_teacher.','.$login_input_teacher.','.$name_faculty_input_teacher.','.$name_department_input_teacher.','.$name_position_input_teacher.','.$input_email.','.$photo_input_teacher.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
+
+    public static function delete_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
+        $result = $connection->query('delete_teacher('.$name_input_teacher.','.$second_name_input_teacher.','.$third_name_input_teacher.','.$name_faculty_input_teacher.','.$name_department_input_teacher.','.$name_position_input_teacher.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
 }
