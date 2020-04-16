@@ -5,7 +5,8 @@ use Core\Database\Database;
 
 class Teacher{
     public static function get_teacher_by_login(Database $connection, $teacher_login){
-        $result = $connection->query('SELECT * FROM get_teacher_by_login('.$teacher_login.')');
+        $result = $connection->query('SELECT * FROM get_teacher_by_login(\''.$teacher_login.'\')');
+        $teacher_array=array();
         while($row = pg_fetch_assoc($result)){
             $teacher_array = [
                 'name' => 'name',

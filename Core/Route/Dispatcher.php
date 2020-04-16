@@ -45,19 +45,29 @@ class Dispatcher {
      */
     public function dispatch($httpMethod, $uri)
     {
-        list($handler, $filters, $vars) = $this->dispatchRoute($httpMethod, trim($uri, '/'));
+        try {
 
-        list($beforeFilter, $afterFilter) = $this->parseFilters($filters);
+            list($handler, $filters, $vars) = $this->dispatchRoute($httpMethod, trim($uri, '/'));
 
-        if($this->dispatchFilters($beforeFilter,$httpMethod,$uri)===false)
-        {
-            return false;
+            list($beforeFilter, $afterFilter) = $this->parseFilters($filters);
+
+            if($this->dispatchFilters($beforeFilter,$httpMethod,$uri)===false)
+            {
+                return false;
+            }
+            $resolvedHandler = $this->handlerResolver->resolve($handler);
+
+            $response = call_user_func_array($resolvedHandler, $vars);
+
+            return $this->dispatchFilters($afterFilter,$httpMethod,$uri, $response);
         }
-        $resolvedHandler = $this->handlerResolver->resolve($handler);
-        
-        $response = call_user_func_array($resolvedHandler, $vars);
+        catch (\Exception $ex)
+        {
 
-        return $this->dispatchFilters($afterFilter,$httpMethod,$uri, $response);
+            header('HTTP/1.1 401 OK');
+            header('Location: http://'.$_SERVER['HTTP_HOST']);
+            exit();
+        }
     }
 
     /**
@@ -120,6 +130,7 @@ class Dispatcher {
             if (isset($this->staticRouteMap['*']))
                 return $this->dispatchStaticRoute($httpMethod, '*');
             else
+
                 throw new HttpMethodNotAllowedException('404');
 
         }

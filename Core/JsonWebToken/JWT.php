@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Core\jsonWebToken\Jwt;
+namespace Core\JsonWebToken;
 
 class JWT
 {

@@ -26,6 +26,8 @@ class Database{
     public function tryConnect($nameserver,$login,$password)
     {
        $this->close();
+       if($nameserver=='')
+           $nameserver=Config::get('database.default_connection');
        $host = Config::get('database.ServerNames.'.$nameserver.'.host');
        $port = Config::get('database.ServerNames.'.$nameserver.'.port');
        $database = Config::get('database.ServerNames.'.$nameserver.'.database');
@@ -78,7 +80,8 @@ class Database{
         if (!$result) {
             return false;
         }
-        return pg_fetch_all($result);
+
+        return $result;
     }
 
     /**
