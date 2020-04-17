@@ -44,11 +44,12 @@ class AuthService
             "error_code"=>"");
 
         $link = new \Core\Database\Database();
-
-             if (isset($_POST['login']) & isset($_POST['password']) & isset($_POST['host'])
-                    & isset($_POST['port']) & isset($_POST['database']) & isset($_POST['charset'])) {
-                    if($link->tryConnectFull($_POST['host'],$_POST['port'],$_POST['database'],
-                            $_POST['login'],$_POST['password'],$_POST['charset'])==true)
+        $postData = file_get_contents('php://input');
+        $postData = json_decode($postData, true);
+             if (isset($postData['login']) & isset($postData['password']) & isset($postData['host'])
+                    & isset($postData['port']) & isset($postData['database']) & isset($postData['charset'])) {
+                    if($link->tryConnectFull($postData['host'],$postData['port'],$postData['database'],
+                            $postData['login'],$postData['password'],$postData['charset'])==true)
                     {
                         $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
                         return $data;
@@ -60,51 +61,51 @@ class AuthService
                     }
                 }
                 else
-                    if(isset($_POST['nameserver']))
+                    if(isset($postData['nameserver']))
                     {
-                        if(isset($_POST['login']) & isset($_POST['password']))
+                        if(isset($postData['login']) & isset($postData['password']))
                         {
-                            if($link->tryConnect($_POST['nameserver'],$_POST['login'],$_POST['password'])==true)
+                            if($link->tryConnect($postData['nameserver'],$postData['login'],$postData['password'])==true)
                             {
                                 $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
                                 return $data;
                             }
                             else
                             {
-                                $data['error_code']="login or password not valid";
+                                $data['error_code']="Не верно введен логин или пароль или ошибка подключения к серверу";
                                 return $data;
                             }
                         }
                         else
                         {
-                            if($link->tryConnect($_POST['nameserver'],'','')==true)
+                            if($link->tryConnect($postData['nameserver'],'','')==true)
                             {
                                 $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
                                 return $data;
                             }
                             else
                             {
-                                $data['error_code']="error with netwwork connection to database server";
+                                $data['error_code']="Ошибка подключения к серверу баз данных";
                                 return $data;
                             }
                         }
                     }
-                    else  if(isset($_POST['login']) & isset($_POST['password']))
+                    else  if(isset($postData['login']) & isset($postData['password']))
                     {
-                        if($link->tryConnect('',$_POST['login'],$_POST['password'])==true)
+                        if($link->tryConnect('',$postData['login'],$postData['password'])==true)
                         {
                             $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
                             return $data;
                         }
                         else
                         {
-                            $data['error_code']="login or password not valid";
+                            $data['error_code']="Не верно введен логин или пароль";
                             return $data;
                         }
                     }
                     else
                 {
-                    $data['error_code']="data empty";
+                        $data['error_code']="Отправлен пустой логин и пароль";
                     return $data;
                 }
 
