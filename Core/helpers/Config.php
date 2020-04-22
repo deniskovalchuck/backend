@@ -41,4 +41,25 @@ class Config{
         return $result;
     }
 
+    private static function _set($key,$value,$source=null)
+    {
+        $keys = explode(".", $key);
+        if(count($keys)>1)
+        {
+            $tmp = array_shift($keys);
+            if(array_key_exists ($tmp,$source) == false)
+                $source[$tmp] = array();
+            $source[$tmp]=  set(implode('.', $keys),$value,$source[$tmp]);
+
+            return $source;
+        }
+        else{
+            $source[$key]=$value;
+            return $source;
+        }
+    }
+    public static function set($key,$value,$source=null)
+    {
+        Config::$ConfigData=Config::_set($key,$value,Config::$ConfigData);
+    }
 }

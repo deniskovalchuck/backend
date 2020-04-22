@@ -3,6 +3,7 @@ namespace App\Http\Services;
 
 use \Core\Database\Database;
 use \Core\helpers\Config;
+use Core\JsonWebToken\JWT;
 use Core\JsonWebToken\JWTException;
 
 class AuthService
@@ -19,8 +20,19 @@ class AuthService
      */
     public static function checkLogin()
     {
-        if(TokenService::parse_token()!=null)
-            return true;
+        if (isset($_SERVER['AUTH_TOKEN']))
+        {
+            $token = $_SERVER['AUTH_TOKEN'];
+            $token_data = TokenService::parse_token($token);
+            if($token_data!=null)
+            {
+                // попробовать приконектится к базе,
+                // если да - сохранить в бд подключение и вернуть true, иначе нет
+
+
+            }
+            else return false;
+        }
         else return  false;
 
     }
@@ -36,83 +48,92 @@ class AuthService
      */
     public static function Login()
     {
-        $data = array(
-            "result"=>"fail",
-            "token"=>"",
-            "new_token"=>"",
-            "user_data"=>"",
-            "error_code"=>"");
 
-        $link = new \Core\Database\Database();
         $postData = file_get_contents('php://input');
         $postData = json_decode($postData, true);
-             if (isset($postData['login']) & isset($postData['password']) & isset($postData['host'])
-                    & isset($postData['port']) & isset($postData['database']) & isset($postData['charset'])) {
-                    if($link->tryConnectFull($postData['host'],$postData['port'],$postData['database'],
-                            $postData['login'],$postData['password'],$postData['charset'])==true)
-                    {
-                        $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
-                        return $data;
-                    }
-                    else
-                    {
-                        $data['error_code']="not connect with data";
-                        return $data;
-                    }
-                }
-                else
-                    if(isset($postData['nameserver']))
-                    {
-                        if(isset($postData['login']) & isset($postData['password']))
-                        {
-                            if($link->tryConnect($postData['nameserver'],$postData['login'],$postData['password'])==true)
-                            {
-                                $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
-                                return $data;
-                            }
-                            else
-                            {
-                                $data['error_code']="Не верно введен логин или пароль или ошибка подключения к серверу";
-                                return $data;
-                            }
-                        }
-                        else
-                        {
-                            if($link->tryConnect($postData['nameserver'],'','')==true)
-                            {
-                                $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
-                                return $data;
-                            }
-                            else
-                            {
-                                $data['error_code']="Ошибка подключения к серверу баз данных";
-                                return $data;
-                            }
-                        }
-                    }
-                    else  if(isset($postData['login']) & isset($postData['password']))
-                    {
-                        if($link->tryConnect('',$postData['login'],$postData['password'])==true)
-                        {
-                            $data = TokenService::generate_token(AuthService::get_user_data($link,$data));
-                            return $data;
-                        }
-                        else
-                        {
-                            $data['error_code']="Не верно введен логин или пароль";
-                            return $data;
-                        }
-                    }
-                    else
-                {
-                        $data['error_code']="Отправлен пустой логин и пароль";
-                    return $data;
-                }
+        AuthService::tryconnect($postData);
 
     }
 
     public static function Logout()
     {
+    }
+
+    private static function tryconnect($postData)
+    {
+        $data = array(
+            "result"=>"fail",
+            "token"=>"",
+            "user_data"=>"",
+            "error_code"=>"",
+        );
+
+        $link = new \Core\Database\Database();
+        if (isset($postData['login']) & isset($postData['password']) & isset($postData['host'])
+            & isset($postData['port']) & isset($postData['database']) & isset($postData['charset'])) {
+            if($link->tryConnectFull($postData['host'],$postData['port'],$postData['database'],
+                    $postData['login'],$postData['password'],$postData['charset'])==true)
+            {
+                $data = TokenService::generate_token(AuthService::get_user_data($link,$data,  $postData));
+                return $data;
+            }
+            else
+            {
+                $data['error_code']=Config::get('errors.connection_prefix').Config::get('errors.connection.not_connect_with_data');
+                return $data;
+            }
+        }
+        else
+            if(isset($postData['nameserver']))
+            {
+                if(isset($postData['login']) & isset($postData['password']))
+                {
+                    if($link->tryConnect($postData['nameserver'],$postData['login'],$postData['password'])==true)
+                    {
+                        $data = TokenService::generate_token(AuthService::get_user_data($link,$data,  $postData));
+                        return $data;
+                    }
+                    else
+                    {
+                        $data['error_code']=Config::get('errors.connection_prefix').Config::get('errors.connection.invalid_login_or_password');
+
+                        return $data;
+                    }
+                }
+                else
+                {
+                    if($link->tryConnect($postData['nameserver'],'','')==true)
+                    {
+                        $data = TokenService::generate_token(AuthService::get_user_data($link,$data,  $postData));
+                        return $data;
+                    }
+                    else
+                    {
+                        $data['error_code']=Config::get('errors.connection_prefix').Config::get('errors.connection.error_connect_to_db');
+
+                        return $data;
+                    }
+                }
+            }
+            else  if(isset($postData['login']) & isset($postData['password']))
+            {
+                if($link->tryConnect('',$postData['login'],$postData['password'])==true)
+                {
+                    $data = TokenService::generate_token(AuthService::get_user_data($link,$data,  $postData));
+                    return $data;
+                }
+                else
+                {
+                    $data['error_code']=Config::get('errors.connection_prefix').Config::get('errors.connection.invalid_login_or_password');
+                    return $data;
+                }
+            }
+            else
+            {
+                $data['error_code']=Config::get('errors.connection_prefix').Config::get('errors.connection.empty_login_or_password');
+
+                return $data;
+            }
     }
 
 }

@@ -7,7 +7,7 @@ use Core\JsonWebToken\JWTException;
 
 class TokenService
 {
-    public static  function generate_token($userdata)
+    public static  function generate_token($userdata,$postdata)
     {
         $jwt = new \Core\JsonWebToken\JWT(Config::get('app.secret_key'));
 
@@ -15,19 +15,18 @@ class TokenService
         $data['result']='success';
 
         $data['token']=  $jwt->encode([
-            'login'=>$_POST['login'],
-            'password'=>$_POST['password'],
-            'hash'=>md5($_POST['login'].$_POST['password'])
+            'logindata'=>json_encode($postdata),
+            'hash'=>md5(json_encode($postdata))
         ]);
         return $data;
     }
-    public static  function  parse_token()
+    public static  function  parse_token($token)
     {
         try {
-            if (isset($_POST['token']))
+            if ($token)
             {
                 $jwt = new \Core\JsonWebToken\JWT(Config::get('app.secret_key'));
-                $data = $jwt->decode($_POST['token']);
+                $data = $jwt->decode($token);
                 return $data;
             }
             else return null;
