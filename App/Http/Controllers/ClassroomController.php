@@ -4,36 +4,71 @@ namespace App\Http\Controllers;
 
 use App\Data\DB\Classrooms;
 use Core\helpers\Config;
+use Core\helpers\Response;
 
 class ClassroomController {
+     var   $link = null;
+
+     public function __construct()
+     {
+         $this->link = Config::get('app.database.connection');
+     }
 
     public  function get_all_bulding(){
-        $data = null;
-        $link = Config::get('app.database.connection');
+        $response = new Response();
         try {
-            $data = Classrooms::get_all_bulding($link);
+            $data = Classrooms::get_all_bulding($this->link);
+            if(!$data)
+                $response->set('data',array());
+            $response->set('data',$data);
+            $response->set('result','success');
         }
         catch (\Exception $exception)
         {
-
+            $response->set('error_code',$exception->getMessage());
         }
-        $data = Classrooms::get_all_bulding($link);
-        if(!$data)
-            return json_encode(array());
-        return json_encode($data);
+        return $response->makeJson();
     }
 
     public  function get_all_classrooms(){
-        $link = Config::get('app.database.data');
-        $data = Classrooms::get_all_classrooms($link);
-        if(!$data)
-            return json_encode(array());
-        return json_encode($data);
+        $response = new Response();
+
+        try {
+            $data = Classrooms::get_all_classrooms($this->link);
+            if(!$data)
+                $response->set('data',array());
+            $response->set('data',$data);
+            $response->set('result','success');
+        }
+        catch (\Exception $exception)
+        {
+            $response->set('error_code',$exception->getMessage());
+        }
+        return $response->makeJson();
 
     }
 
     public  function get_all_classrooms_in_building(){
-        return 1;
+        $response = new Response();
+        if(isset($_POST['num_building']))
+      {
+          try {
+              $data = Classrooms::get_all_classrooms_in_building($this->link,$_POST['num_building']);
+              if(!$data)
+                  $response->set('data',array());
+              $response->set('data',$data);
+              $response->set('result','success');
+          }
+          catch (\Exception $exception)
+          {
+              $response->set('error_code',$exception->getMessage());
+          }
+      }
+        else
+        {
+            //вернуть код ошибки, что не переданы необходимые данные
+        }
+        return $response->makeJson();
 
     }
 
