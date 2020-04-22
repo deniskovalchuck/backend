@@ -265,7 +265,7 @@ class JWT
             return \base64_decode(\strtr($data, '-_', '+/'));
         }
 
-        $data = \json_decode(\base64_decode(\strtr($data, '-_', '+/')));
+        $data = \json_decode(\base64_decode(\strtr($data, '-_', '+/')),true);
         $this->validateLastJson();
 
         return $data;

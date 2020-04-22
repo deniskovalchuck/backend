@@ -19,7 +19,7 @@ class LoginController {
      */
     public function postlogin()
     {
-        return json_encode(AuthService::Login());
+        return AuthService::Login();
     }
     public function getLogout()
     {

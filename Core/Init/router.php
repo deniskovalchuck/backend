@@ -6,9 +6,8 @@ use Core\Route\RouteCollector;
 $router = new RouteCollector();
 include AppDir.'/Core/Init/filters.php';
 
-
 //подлкючение файлов с маршрутами
-$router->group(['prefix' => 'api'], function($router){
+$router->group(['prefix' => 'api','before'=>'ConfigDataConverter'], function($router){
     include AppDir.'/routes/api.php';
 });
 include AppDir.'/routes/web.php';

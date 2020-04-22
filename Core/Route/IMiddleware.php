@@ -3,5 +3,5 @@ namespace Core\Route;
 
 interface IMiddleware
 {
-    public static function handle($httpMethod,$uri):boolean;
+    public static function handle($httpMethod,$uri):bool;
 }

@@ -49,7 +49,7 @@ class Config{
             $tmp = array_shift($keys);
             if(array_key_exists ($tmp,$source) == false)
                 $source[$tmp] = array();
-            $source[$tmp]=  set(implode('.', $keys),$value,$source[$tmp]);
+            $source[$tmp]=  self::_set(implode('.', $keys),$value,$source[$tmp]);
 
             return $source;
         }

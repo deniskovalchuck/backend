@@ -1,6 +1,5 @@
 <?php
-ini_set('display_errors','off');
-
+ini_set('display_errors','on');
 
 ini_set("max_execution_time",3600);
 //ini_set( 'display_errors','1');

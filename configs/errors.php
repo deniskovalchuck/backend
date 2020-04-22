@@ -1,7 +1,7 @@
 <?php
 return [
-    'connection_prefix'=>'1',
-    'token_prefix'=>'1',
+    'connection_prefix'=>'10',
+    'token_prefix'=>'20',
 
     //коды ошибок подключений
     'connection'=>[
@@ -14,6 +14,7 @@ return [
         'update_token'=>'1',
         'remove_token'=>'2',
         'invalid_token'=>'3',
+        'not_token'=>'4'
     ],
 
 ];

@@ -3,6 +3,8 @@
 define('ConfigsAlias', array(
     'app' => 'app.php',
     'database' => 'database.php',
+    'errors' => 'errors.php',
+
 ));
 
 $namespaces = array(
@@ -11,5 +13,7 @@ $namespaces = array(
 );
 
 define('middleware',array(
-    'auth'=>\App\Http\Middleware\AuthMiddleware::class
+    'auth'=>\App\Http\Middleware\AuthMiddleware::class,
+    'ConfigDataConverter'=>\App\Http\Middleware\ConfigDataMiddleware::class
+
 ));
