@@ -2,6 +2,7 @@
 
 namespace App\Data\DB;
 use Core\Database\Database;
+use Core\helpers\Config;
 use Core\Validation\Validator;
 
 class Classrooms{
@@ -29,10 +30,8 @@ class Classrooms{
 
         //проверяем, есть ли ошибки
         if ($validation->fails()) {
-            // получаем ошибки
-            $errors = $validation->errors();
             //если ошибка - выкидывай исключение
-            throw(new \Exception($errors->firstOfAll()));
+            throw(new \Exception(Config::get('errors.token_prefix').Config::get('errors.token.invalid_token')));
         }
         //ошибок нет
 

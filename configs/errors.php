@@ -1,8 +1,8 @@
 <?php
 return [
+    //90 - ошибка на стороне базы
     'connection_prefix'=>'10',
     'token_prefix'=>'20',
-
     //коды ошибок подключений
     'connection'=>[
         'not_connect_with_data'=>'1',
@@ -16,5 +16,6 @@ return [
         'invalid_token'=>'3',
         'not_token'=>'4'
     ],
+
 
 ];

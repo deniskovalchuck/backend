@@ -10,6 +10,11 @@ class  ConfigDataMiddleware implements IMiddleware
 
         /*  $postData = file_get_contents('php://input');
        $_POST = json_decode($postData, true);*/
+
+        foreach ($_FILES as $key=>$value)
+        {
+            $_POST[$key]=$value;
+        }
         return true;
 
     }
