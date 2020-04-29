@@ -2,6 +2,8 @@
 
 namespace App\Data\DB;
 use Core\Database\Database;
+use Core\helpers\Config;
+use Core\Validation\Validator;
 
 class Classrooms{
 
@@ -18,6 +20,23 @@ class Classrooms{
     }
 
     public static function get_all_classrooms_in_building(Database $connection, $num_building){
+
+        $validator = new Validator;
+
+        //правила для валидации (входное - массив ассоциативный)
+        $validation = $validator->validate(['num_building'=>$num_building], [
+            'num_building'   => 'required|numeric'
+        ]);
+
+        //проверяем, есть ли ошибки
+        if ($validation->fails()) {
+            //если ошибка - выкидывай исключение
+            throw(new \Exception(Config::get('errors.token_prefix').Config::get('errors.token.invalid_token')));
+        }
+        //ошибок нет
+
+
+
         $result = $connection->query('SELECT * FROM get_all_classes_in_building('.$num_building.')');
         $arr = pg_fetch_all($result);
         return $arr;

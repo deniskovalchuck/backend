@@ -9,7 +9,7 @@
  * Licensed under MIT license.
  */
 
-namespace Core\jsonWebToken\Jwt;
+namespace Core\JsonWebToken;
 
 class JWTException extends \InvalidArgumentException
 {

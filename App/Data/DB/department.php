@@ -10,6 +10,17 @@ class Department{
         return $arr;
     }
 
+    public static function get_all_departments_with_logo(Database $connection){
+        $result = $connection->query('SELECT * FROM get_all_departments_with_logo()');
+        while($row = pg_fetch_assoc($result)){
+            $department_array = [
+                'name_departments' => 'name_departments',
+                'logo_departments' => 'logo_departments',
+            ];
+        }
+        return $department_array;
+    }
+
     public static function get_all_departments_in_faculty(Database $connection, $name_input_faculty){
         $result = $connection->query('SELECT * FROM get_all_departments_in_faculty('.$name_input_faculty.')');
         $arr = pg_fetch_all($result);
