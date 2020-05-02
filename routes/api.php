@@ -3,7 +3,8 @@
 $router->postController('/login', "\App\Http\Controllers\LoginController@postlogin");
 
 $router->group(['before' => 'auth'], function($router){
-    
+    $router->postController('/update_token', "\App\Http\Controllers\LoginController@update_token");
+
     /*аудитории*/
     $router->postController('/classrooms/get_all_bulding', "\App\Http\Controllers\ClassroomController@get_all_bulding");
     $router->postController('/classrooms/get_all_classrooms', "\App\Http\Controllers\ClassroomController@get_all_classrooms");

@@ -25,4 +25,6 @@ class LoginController {
     {
         return AuthService::Logout();
     }
+    public function update_token()
+    {}
 }
