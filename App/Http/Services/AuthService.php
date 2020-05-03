@@ -18,6 +18,7 @@ class AuthService
      */
     public static function checkLogin()
     {
+        $request = new Response();
         if (isset($_SERVER['HTTP_TOKEN']))
         {
             $token = $_SERVER['HTTP_TOKEN'];
@@ -30,22 +31,20 @@ class AuthService
                 // попробовать приконектится к базе,
                 // если да - сохранить в бд подключение и вернуть true, иначе нет
                 $data = self::tryconnect($tmp);
-                if($data->get('error_code')=="") {
-                    header("HTTP/1.0 200 OK");
                     return true;
-                }
-                header("HTTP/1.0 ".Config::get('errors.token_prefix').Config::get('errors.token.invalid_token')." Error Token");
-                return false;
+
+
             }
             else
             {
-                header("HTTP/1.0 ".Config::get('errors.token_prefix').Config::get('errors.token.invalid_token')." Error Token");
+                $request->set('error_code',Config::get('errors.token_prefix').Config::get('errors.token.invalid_token')." Error Token");
                 return false;
             }
         }
         else
             {
-                header("HTTP/1.0 ".Config::get('errors.token_prefix').Config::get('errors.token.not_token')." Error Token");
+
+                $request->set('error_code',Config::get('errors.token_prefix').Config::get('errors.token.not_token')." Error Token");
                 return false;
             }
 
@@ -62,7 +61,6 @@ class AuthService
      */
     public static function Login()
     {
-
         $response =  AuthService::tryconnect($_POST);
         if($response->get('result')=="success")
         {
