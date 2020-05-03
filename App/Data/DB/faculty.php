@@ -8,8 +8,8 @@ class Faculty{
         $result = $connection->query('SELECT * FROM get_teachers_in_faculty()');
         while($row = pg_fetch_assoc($result)){
             $teacher_array = [
-                'name_faculties' => 'name_faculties',
-                'logo_faculty' => 'logo_faculty',
+                'name_faculties' => $row['name_faculties'],
+                'logo_faculty' => $row['logo_faculty'],
             ];
         }
         return $teacher_array;
