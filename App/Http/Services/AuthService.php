@@ -61,7 +61,6 @@ class AuthService
      */
     public static function Login()
     {
-
         $response =  AuthService::tryconnect($_POST);
         if($response->get('result')=="success")
         {
