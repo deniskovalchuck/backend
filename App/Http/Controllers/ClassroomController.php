@@ -129,7 +129,7 @@ class ClassroomController {
 
     public  function delete_classroom(){
         $response = new Response();
-        if(isset($_POST['num_input_class']))
+        if(isset($_POST['num_input_class']) & isset($_POST['num_input_building']))
         {
             try {
                 $data = Classrooms::delete_classroom($this->link,$_POST['num_input_building'],$_POST['num_input_class']);
