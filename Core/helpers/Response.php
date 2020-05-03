@@ -11,7 +11,6 @@ class Response
             "result"=>"fail",
             "token"=>'',
             "data"=>"",
-            "error_code"=>"",
         );
     }
     public function init($data){
@@ -20,6 +19,12 @@ class Response
 
     public function  set($key,$value)
    {
+       if($key=='error_code')
+       {
+           header("HTTP/1.0 ".$value);
+            exit();
+       }
+       else
        $this->data[$key]=$value;
    }
     public function get($key){

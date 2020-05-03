@@ -10,7 +10,7 @@ class  AuthMiddleware implements IMiddleware
     public static function handle($httpMethod,$uri):bool
     {
 
-        return AuthService::checkLogin();
-
+        $data =  AuthService::checkLogin();
+        return  $data;
     }
 }

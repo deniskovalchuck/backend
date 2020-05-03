@@ -52,7 +52,7 @@ class ClassroomController {
 
     public  function get_all_classrooms_in_building(){
         $response = new Response();
-        if(isset($_POST['num_building']))
+       if(isset($_POST['num_building']))
       {
           try {
               $data = Classrooms::get_all_classrooms_in_building($this->link,$_POST['num_building']);
@@ -132,7 +132,7 @@ class ClassroomController {
         if(isset($_POST['num_input_class']))
         {
             try {
-                $data = Classrooms::delete_classroom($this->link,$_POST['num_input_class']);
+                $data = Classrooms::delete_classroom($this->link,$_POST['num_input_building'],$_POST['num_input_class']);
                 if(!$data)
                     $response->set('data',array());
                 else
