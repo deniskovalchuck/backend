@@ -14,8 +14,8 @@ class Department{
         $result = $connection->query('SELECT * FROM get_all_departments_with_logo()');
         while($row = pg_fetch_assoc($result)){
             $department_array = [
-                'name_departments' => 'name_departments',
-                'logo_departments' => 'logo_departments',
+                'name_departments' => $row['name_departments'],
+                'logo_departments' => $row['logo_departments'],
             ];
         }
         return $department_array;
@@ -31,8 +31,8 @@ class Department{
         $result = $connection->query('SELECT * FROM get_all_departments_in_faculty_with_logo('.$name_input_faculty.')');
         while($row = pg_fetch_assoc($result)){
             $department_array = [
-                'name_departments' => 'name_departments',
-                'logo_departments' => 'logo_departments',
+                'name_departments' => $row['name_departments'],
+                'logo_departments' => $row['logo_departments'],
             ];
         }
         return $department_array;
