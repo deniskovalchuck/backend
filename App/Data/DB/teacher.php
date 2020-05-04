@@ -69,11 +69,4 @@ class Teacher{
         $arr = pg_fetch_all($result);
         return $arr;
     }
-
-    /*return string ('Преподавателя не существует!', 'Предмета не существует!', 'Запись успешно удалена!')*/
-    public static function delete_teacher_subject(Database $connection, $login_teacher, $name_subject){
-        $result = $connection->query('SELECT * FROM delete_teacher_subjects('.$login_teacher','.$name_subject.')');
-        $arr = pg_fetch_all($result);
-        return $arr;
-    }
 }
