@@ -69,4 +69,16 @@ class Teacher{
         $arr = pg_fetch_all($result);
         return $arr;
     }
+
+    public function create_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
+        $result = $connection->query('create_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
+
+    public function delete_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
+        $result = $connection->query('delete_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
 }
