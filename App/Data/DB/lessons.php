@@ -25,6 +25,17 @@ class Lesson{
         return $arr;
     }
 
+    public static function get_all_type_lesson(Database $connection){
+        $result = $connection->query('SELECT * FROM get_all_type_lesson()');
+        $type_lessons_array = array();
+        while($row = pg_fetch_assoc($result)){
+            $type_lessons_array = [
+                'type_lessons' => $row['type_lessons'],
+            ];
+        }
+        return $type_lessons_array;
+    }
+
     public static function get_all_lessons(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_lessons()');
         $lessons_array = array();

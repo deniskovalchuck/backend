@@ -69,16 +69,52 @@ class Teacher{
         $arr = pg_fetch_all($result);
         return $arr;
     }
+    
+    public static function get_teacher_info(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
+        $result = $connection->query('SELECT * get_teacher_info('.$name_input_teacher.', '.$second_name_input_teacher.', '.$third_name_input_teacher.', '.$name_faculty_input_teacher.', '.$name_department_input_teacher.', '.$name_position_input_teacher.')');
+        $teacher_info = array();
+        while($row = pg_fetch_assoc($result)){
+            $teacher_info = [
+                'name_teacher' => $row['name_teacher'], 
+                'second_name_teacher' => $row['second_name_teacher'], 
+                'third_name_teacher' => $row['third_name_teacher'], 
+                'login_teacher' => $row['login_teacher'], 
+                'name_faculty_teacher' => $row['name_faculty_teacher'], 
+                'name_department_teacher' => $row['name_department_teacher'], 
+                'name_position_teacher' => $row['name_position_teacher'], 
+                'input_email' => $row['input_email'], 
+                'photo_input_teacher' => $row['photo_input_teacher'],
+            ];
+        }
+        return $teacher_info;
+    }
 
-    public function create_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
+    public static function get_teacher_login(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher){
+        $result = $connection->query('SELECT * get_teacher_login('.$name_input_teacher.', '.$second_name_input_teacher.', '.$third_name_input_teacher.', '.$name_faculty_input_teacher.', '.$name_department_input_teacher.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
+
+    public static function create_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
         $result = $connection->query('SELECT * create_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
-    public function delete_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
+    public static function delete_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
         $result = $connection->query('SELECT * delete_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
         $arr = pg_fetch_all($result);
         return $arr;
+    }
+
+    public static function get_all_teacher_positions(Database $connection){
+        $result = $connection->query('SELECT * get_all_teacher_positions()');
+        $teacher_positions = array();
+        while($row = pg_fetch_assoc($result)){
+            $teacher_positions = [
+                'teachers_positions' => $row['teachers_positions'],
+            ];
+        }
+        return $teacher_positions;
     }
 }
