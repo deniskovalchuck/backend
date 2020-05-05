@@ -58,26 +58,26 @@ class Teacher{
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
     public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $input_email, $photo_input_teacher){
-        $result = $connection->query('add_teacher('.$name_input_teacher.','.$second_name_input_teacher.','.$third_name_input_teacher.','.$login_input_teacher.','.$name_faculty_input_teacher.','.$name_department_input_teacher.','.$name_position_input_teacher.','.$input_email.','.$photo_input_teacher.')');
+        $result = $connection->query('SELECT * add_teacher('.$name_input_teacher.','.$second_name_input_teacher.','.$third_name_input_teacher.','.$login_input_teacher.','.$name_faculty_input_teacher.','.$name_department_input_teacher.','.$name_position_input_teacher.','.$input_email.','.$photo_input_teacher.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return string ('Запись успешно удалена!', 'Записи не существует!')*/
     public static function delete_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
-        $result = $connection->query('delete_teacher('.$name_input_teacher.','.$second_name_input_teacher.','.$third_name_input_teacher.','.$name_faculty_input_teacher.','.$name_department_input_teacher.','.$name_position_input_teacher.')');
+        $result = $connection->query('SELECT * delete_teacher('.$name_input_teacher.','.$second_name_input_teacher.','.$third_name_input_teacher.','.$name_faculty_input_teacher.','.$name_department_input_teacher.','.$name_position_input_teacher.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public function create_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
-        $result = $connection->query('create_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
+        $result = $connection->query('SELECT * create_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public function delete_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
-        $result = $connection->query('delete_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
+        $result = $connection->query('SELECT * delete_sub_for_teacher('.$login_replaceable_teacher.','.$login_replacing_teacher.','.$date_sub_teacher.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
