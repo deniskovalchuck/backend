@@ -12,6 +12,7 @@ class Department{
 
     public static function get_all_departments_with_logo(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_departments_with_logo()');
+        $department_array=array();
         while($row = pg_fetch_assoc($result)){
             $department_array = [
                 'name_departments' => $row['name_departments'],
@@ -29,6 +30,8 @@ class Department{
 
     public static function get_all_departments_in_faculty_with_logo(Database $connection, $name_input_faculty){
         $result = $connection->query('SELECT * FROM get_all_departments_in_faculty_with_logo('.$name_input_faculty.')');
+        $department_array=array();
+
         while($row = pg_fetch_assoc($result)){
             $department_array = [
                 'name_departments' => $row['name_departments'],

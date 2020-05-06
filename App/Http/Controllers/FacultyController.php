@@ -33,7 +33,7 @@ class FacultyController {
         return $response->makeJson();
     }
 
-    public  function add_faculty($name_input_faculty, $logo_input_faculty){
+    public  function add_faculty(){
         $response = new Response();
         if(isset($_POST['logo']) &
             isset($_POST['faculty']))
