@@ -22,7 +22,8 @@ class Response
        if($key=='error_code')
        {
            header("HTTP/1.0 ".$value);
-            exit();
+           echo $this->makeJson();
+           die();
        }
        else
        $this->data[$key]=$value;

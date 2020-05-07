@@ -12,11 +12,14 @@ class Department{
 
     public static function get_all_departments_with_logo(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_departments_with_logo()');
+        $department_array=array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $department_array = [
-                'name_departments' => $row['name_departments'],
-                'logo_departments' => $row['logo_departments'],
+            $department_array[$i] = [
+                'name_departments' => $row['name_depatments'],
+                'logo_departments' => $row['logo_depatments'],
             ];
+            $i++;
         }
         return $department_array;
     }
@@ -29,17 +32,21 @@ class Department{
 
     public static function get_all_departments_in_faculty_with_logo(Database $connection, $name_input_faculty){
         $result = $connection->query('SELECT * FROM get_all_departments_in_faculty_with_logo('.$name_input_faculty.')');
+        $department_array=array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $department_array = [
-                'name_departments' => $row['name_departments'],
-                'logo_departments' => $row['logo_departments'],
+            $department_array[$i] = [
+                'name_departments' => $row['name_depatments'],
+                'logo_departments' => $row['logo_depatments'],
             ];
+            $i++;
         }
         return $department_array;
     }
     /*return string ('Факультета несуществует!', 'Кафедры не существует!', 'Запись успешно удалена!')*/
     public static function add_department(Database $connection, $name_input_department, $logo_input_department, $name_faculty_input_department, $num_building_input_department, $num_class_input_department){
-        $result = $connection->query('SELECT * FROM add_department('.$name_input_department.','.$logo_input_department.','.$name_faculty_input_department.','.$num_building_input_department.','.$num_class_input_department.')');
+        $result = $connection->query('SELECT * FROM add_department(\''.$name_input_department.'\',\''.$logo_input_department.'\',\''.
+            $name_faculty_input_department.'\',\''.$num_building_input_department.'\',\''.$num_class_input_department.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }

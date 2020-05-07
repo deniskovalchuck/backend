@@ -19,32 +19,29 @@ class AuthService
     public static function checkLogin()
     {
         $request = new Response();
-        if (isset($_SERVER['HTTP_TOKEN']))
-        {
+        if (isset($_SERVER['HTTP_TOKEN'])) {
             $token = $_SERVER['HTTP_TOKEN'];
             $token_data = TokenService::parse_token($token);
-            if($token_data!=null)
-            {
-                $tmp = json_decode($token_data['logindata'],true);
-                Config::set('app.token',$token);
+            if ($token_data != null) {
+                $tmp = json_decode($token_data['logindata'], true);
+                Config::set('app.token', $token);
 
                 // попробовать приконектится к базе,
                 // если да - сохранить в бд подключение и вернуть true, иначе нет
                 $data = self::tryconnect($tmp);
-                    return true;
+                return true;
 
-
-            }
-            else
-            {
-                $request->set('error_code',Config::get('errors.token_prefix').Config::get('errors.token.invalid_token')." Error Token");
+            } else {
+                echo $request->makeJson();
+                $request->set('error_code', Config::get('errors.token_prefix') . Config::get('errors.token.invalid_token') . " Error Token");
                 return false;
+
             }
         }
         else
             {
-
-                $request->set('error_code',Config::get('errors.token_prefix').Config::get('errors.token.not_token')." Error Token");
+                echo $request->makeJson();
+                $request->set('error_code', Config::get('errors.token_prefix') . Config::get('errors.token.not_token') . " Error Token");
                 return false;
             }
 
