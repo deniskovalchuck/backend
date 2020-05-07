@@ -32,7 +32,31 @@ class FacultyController {
 
         return $response->makeJson();
     }
+    public  function get_all_faculties_no_logo(){
+        $response = new Response();
 
+        try {
+            $data = Faculty::get_all_faclties($this->link);
+            if(!$data)
+                $response->set('data',array());
+            else {
+                $res = array();
+                for($i=0;$i<count($data);$i++)
+                {
+                    $res[$i] = array();
+                    $res[$i]['name_faculties']=$data[$i]['name_faculties'];
+                }
+                $response->set('data', $res);
+            }
+            $response->set('result','success');
+        }
+        catch (\Exception $exception)
+        {
+            $response->set('error_code',$exception->getMessage());
+        }
+
+        return $response->makeJson();
+    }
     public  function add_faculty(){
         $response = new Response();
         if(isset($_POST['logo']) &

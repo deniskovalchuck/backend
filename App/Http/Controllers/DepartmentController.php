@@ -110,7 +110,7 @@ class DepartmentController {
         {
             try {
                 $data = Department::add_department($this->link,$_POST['department_name'],
-                     $_POST['logo_input_department']['tmp_name'],
+                     $_POST['logo_input_department'],
                     $_POST['faculty'],
                     $_POST['num_building_input_department'],
                     $_POST['num_class_input_department']
