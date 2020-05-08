@@ -6,8 +6,21 @@ use Core\Database\Database;
 class Faculty{
     public static function get_all_faclties(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_faculties()');
-        $arr = pg_fetch_all($result);
+        $faculty_array=array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $faculty_array[$i] = [
+                'name_faculties' => $row['name_faculties'],
+                'logo_faculty' => $row['logo_faculty'],
+            ];
+            $i++;
+        }
+        return $faculty_array;
+    }
 
+    public static function get_all_faculties_without_logo(Database $connection){
+        $result = $connection->query('SELECT * FROM get_all_faculties_without_logo()');
+        $arr = pg_fetch_all($result);
         return $arr;
     }
 
