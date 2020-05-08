@@ -52,7 +52,7 @@ class SpecializationController{
         return $response->makeJson();
     }
 
-    public function get_all_specialization_from_department(){
+        public function get_all_specialization_from_department(){
         $response = new Response();
         if(isset($_POST['department_name'])) {
             try {
@@ -72,6 +72,7 @@ class SpecializationController{
         }
         return $response->makeJson();
     }
+
 
     public function add_spezialization(){
         $response = new Response();

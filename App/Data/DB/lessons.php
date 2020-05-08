@@ -3,6 +3,9 @@
 namespace App\Data\DB;
 use Core\Database\Database;
 
+//Уроки, занятия, связанные с днями недель и с преподами. Сам УРОК
+
+
 class Lesson{
     /*return integer (-1 - error)*/
     public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_type_education, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $start_input_date, $end_input_date){

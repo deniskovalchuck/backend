@@ -3,6 +3,10 @@
 namespace App\Data\DB;
 use Core\Database\Database;
 
+
+//Subject - дисциплины
+
+
 class Subjects{
     public static function get_all_subjects(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_subjects()');
