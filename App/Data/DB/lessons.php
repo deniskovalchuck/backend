@@ -55,15 +55,12 @@ class Lesson{
         $group_lessons_array = array();
         while($row = pg_fetch_assoc($result)){
             $group_lessons_array = [
-                'id_type_lesson' => $row['id_type_lesson'], 
-                'id_payment_type_on_lesson' => $row['id_payment_type_on_lesson'], 
-                'num_lesson' => $row['num_lesson'], 
-                'id_lesson' => $row['id_lesson'], 
-                'id_week_day' => $row['id_week_day'], 
-                'id_teachers_on_lesson' => $row['id_teachers_on_lesson'], 
-                'id_lesson_for_teacher' => $row['id_lesson_for_teacher'], 
-                'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
-                'id_lesson_for_group' => $row['id_lesson_for_group'],
+                'id_type_lesson' => $row['id_type_lesson'],
+                'num_lesson' => $row['num_lesson'],
+                'id_lesson' => $row['id_lesson'],
+                'id_week_day' => $row['id_week_day'],
+                'id_groups_on_lesson' => $row['id_groups_on_lesson'],
+                'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
             ];
         }
         return $group_lessons_array;
@@ -79,10 +76,8 @@ class Lesson{
                 'num_lesson' => $row['num_lesson'], 
                 'id_lesson' => $row['id_lesson'], 
                 'id_week_day' => $row['id_week_day'], 
-                'id_teachers_on_lesson' => $row['id_teachers_on_lesson'], 
-                'id_lesson_for_teacher' => $row['id_lesson_for_teacher'], 
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
-                'id_lesson_for_group' => $row['id_lesson_for_group'],
+                'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
             ];
         }
         return $teacher_lessons_array;
