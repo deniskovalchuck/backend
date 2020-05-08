@@ -107,7 +107,7 @@ class SpecializationController{
             isset($_POST['name_specialization_for_delete'])
         ) {
             try {
-                $data = Groups::get_all_groups($this->link,$_POST['name_faculty_for_delete'],
+                $data = Specialization::delete_specialization ($this->link,$_POST['name_faculty_for_delete'],
                     $_POST['name_department_for_delete'],$_POST['name_specialization_for_delete']);
                 if (!$data)
                     $response->set('data', array());
