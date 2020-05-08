@@ -16,8 +16,8 @@ class Department{
         $i=0;
         while($row = pg_fetch_assoc($result)){
             $department_array[$i] = [
-                'name_departments' => $row['name_depatments'],
-                'logo_departments' => $row['logo_depatments'],
+                'name_departments' => $row['name_departments'],
+                'logo_departments' => $row['logo_departments'],
             ];
             $i++;
         }
@@ -25,19 +25,19 @@ class Department{
     }
 
     public static function get_all_departments_in_faculty(Database $connection, $name_input_faculty){
-        $result = $connection->query('SELECT * FROM get_all_departments_in_faculty('.$name_input_faculty.')');
+        $result = $connection->query('SELECT * FROM get_all_departments_in_faculty(\''.$name_input_faculty.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public static function get_all_departments_in_faculty_with_logo(Database $connection, $name_input_faculty){
-        $result = $connection->query('SELECT * FROM get_all_departments_in_faculty_with_logo('.$name_input_faculty.')');
+        $result = $connection->query('SELECT * FROM get_all_departments_in_faculty_with_logo(\''.$name_input_faculty.'\')');
         $department_array=array();
         $i=0;
         while($row = pg_fetch_assoc($result)){
             $department_array[$i] = [
-                'name_departments' => $row['name_depatments'],
-                'logo_departments' => $row['logo_depatments'],
+                'name_departments' => $row['name_departments'],
+                'logo_departments' => $row['logo_departments'],
             ];
             $i++;
         }
