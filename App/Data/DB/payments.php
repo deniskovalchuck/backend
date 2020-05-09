@@ -21,10 +21,12 @@ class Payment{
     public static function get_all_payment_type(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_payment_type()');
         $payment_type_array = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $payment_type_array = [
+            $payment_type_array[$i] = [
                 'name_input_payment_type' => $row['name_input_payment_type'],
             ];
+            $i++;
         }
         return $payment_type_array;
     }

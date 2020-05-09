@@ -21,10 +21,13 @@ class Education{
     public static function get_all_education_type(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_education_type()');
         $education_type_array = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $education_type_array = [
+            $education_type_array[$i] = [
                 'name_input_education_type' => $row['name_input_education_type'],
             ];
+            $i++;
+
         }
         return $education_type_array;
     }
