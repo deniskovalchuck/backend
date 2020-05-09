@@ -31,10 +31,13 @@ class Lesson{
     public static function get_all_type_lesson(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_type_lesson()');
         $type_lessons_array = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $type_lessons_array = [
+            $type_lessons_array[$i] = [
                 'type_lessons' => $row['type_lessons'],
             ];
+            $i++;
+
         }
         return $type_lessons_array;
     }
@@ -42,13 +45,17 @@ class Lesson{
     public static function get_all_lessons(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_lessons()');
         $lessons_array = array();
+        $i=0;
+
         while($row = pg_fetch_assoc($result)){
-            $lessons_array = [
+            $lessons_array[$i] = [
                 'num_lesson' => $row['num_lesson'],
                 'id_week_day' => $row['id_week_day'],
                 'id_type_lesson' => $row['id_type_lesson'],
                 'id_payment_type' => $row['id_payment_type'],
             ];
+            $i++;
+
         }
         return $lessons_array;
     }
@@ -56,8 +63,9 @@ class Lesson{
     public static function get_all_lessons_by_group(Database $connection, $abbrevation_input_group, $year_entry_input, $name_faculty_input, $name_department_input, $name_specialization_input, $education_type_input, $sub_input_group){
         $result = $connection->query('SELECT * get_all_lessons_by_group(\''.$abbrevation_input_group.'\', \''.$year_entry_input.', \''.$name_faculty_input.', \''.$name_department_input.'\', \''.$name_specialization_input.'\', \''.$education_type_input.'\', \''.$sub_input_group.'\')');
         $group_lessons_array = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $group_lessons_array = [
+            $group_lessons_array[$i] = [
                 'id_type_lesson' => $row['id_type_lesson'],
                 'num_lesson' => $row['num_lesson'],
                 'id_lesson' => $row['id_lesson'],
@@ -65,6 +73,8 @@ class Lesson{
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'],
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
             ];
+            $i++;
+
         }
         return $group_lessons_array;
     }
@@ -72,8 +82,9 @@ class Lesson{
     public static function get_all_lessons_by_teacher(Database $connection, $login_input_teacher){
         $result = $connection->query('SELECT * get_all_lessons_by_teacher(\''.$login_input_teacher.'\')');
         $teacher_lessons_array = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $teacher_lessons_array = [
+            $teacher_lessons_array[$i]  = [
                 'id_type_lesson' => $row['id_type_lesson'], 
                 'id_payment_type_on_lesson' => $row['id_payment_type_on_lesson'], 
                 'num_lesson' => $row['num_lesson'], 
@@ -82,6 +93,7 @@ class Lesson{
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
             ];
+            $i++;
         }
         return $teacher_lessons_array;
     }

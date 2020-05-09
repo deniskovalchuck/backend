@@ -22,10 +22,12 @@ class Position{
     public static function get_all_teacher_positions(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_teacher_positions()');
         $positions_array = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $positions_array = [
+            $positions_array[$i] = [
                 'teachers_positions' => $row['teachers_positions'],
             ];
+            $i++;
         }
         return $positions_array;
     }

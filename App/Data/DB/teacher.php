@@ -7,8 +7,9 @@ class Teacher{
     public static function get_teacher_by_login(Database $connection, $teacher_login){
         $result = $connection->query('SELECT * FROM get_teacher_by_login(\''.$teacher_login.'\')');
         $teacher_array=array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $teacher_array = [
+            $teacher_array[$i] = [
                 'name' => $row['name'],
                 'second_name' => $row['second_name'],
                 'third_name' => $row['third_name'],
@@ -18,14 +19,16 @@ class Teacher{
                 'department_id' => $row['department_id'],
                 'position_id' => $row['position_id'],
             ];
+            $i++;
         }
         return $teacher_array;
     }
 
     public static function get_teachers_in_faculty(Database $connection, $teacher_faculty_name){
         $result = $connection->query('SELECT * FROM get_teachers_in_faculty(\''.$teacher_faculty_name.'\')');
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $teacher_array = [
+            $teacher_array[$i] = [
                 'name' => $row['name'],
                 'second_name' => $row['second_name'],
                 'third_name' => $row['third_name'],
@@ -35,14 +38,16 @@ class Teacher{
                 'department_id' => $row['department_id'],
                 'position_id' => $row['position_id'],
             ];
+            $i++;
         }
         return $teacher_array;
     }
 
     public static function get_teachers_in_department(Database $connection, $teacher_faculty_name, $teacher_department_name){
         $result = $connection->query('SELECT * FROM get_teachers_in_faculty(\''.$teacher_faculty_name.'\',\''.$teacher_department_name.'\')');
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $teacher_array = [
+            $teacher_array[$i] = [
                 'name' => $row['name'],
                 'second_name' => $row['second_name'],
                 'third_name' => $row['third_name'],
@@ -52,6 +57,7 @@ class Teacher{
                 'department_id' => $row['department_id'],
                 'position_id' => $row['position_id'],
             ];
+            $i++;
         }
         return $teacher_array;
     }
@@ -73,8 +79,9 @@ class Teacher{
     public static function get_teacher_info(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
         $result = $connection->query('SELECT * get_teacher_info(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\', \''.$name_position_input_teacher.'\')');
         $teacher_info = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $teacher_info = [
+            $teacher_info[$i] = [
                 'name_teacher' => $row['name_teacher'], 
                 'second_name_teacher' => $row['second_name_teacher'], 
                 'third_name_teacher' => $row['third_name_teacher'], 
@@ -85,6 +92,7 @@ class Teacher{
                 'input_email' => $row['input_email'], 
                 'photo_input_teacher' => $row['photo_input_teacher'],
             ];
+            $i++;
         }
         return $teacher_info;
     }
@@ -110,10 +118,12 @@ class Teacher{
     public static function get_all_teacher_positions(Database $connection){
         $result = $connection->query('SELECT * get_all_teacher_positions()');
         $teacher_positions = array();
+        $i=0;
         while($row = pg_fetch_assoc($result)){
-            $teacher_positions = [
+            $teacher_positions[$i] = [
                 'teachers_positions' => $row['teachers_positions'],
             ];
+            $i++;
         }
         return $teacher_positions;
     }
