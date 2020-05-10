@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\DB\Position;
+use App\Data\DB\Positions;
 use Core\helpers\Config;
 use Core\helpers\Response;
 
@@ -19,7 +19,7 @@ class PositionController {
         if(isset($_POST['name_input_position']))
         {
             try {
-                $data = Position::add_position($this->link,$_POST['name_input_position']);
+                $data = Positions::add_position($this->link,$_POST['name_input_position']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -44,7 +44,7 @@ class PositionController {
         if(isset($_POST['name_teacher_position']))
         {
             try {
-                $data = Position::delete_teacher_position($this->link,$_POST['name_teacher_position']);
+                $data = Positions::delete_teacher_position($this->link,$_POST['name_teacher_position']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -67,7 +67,7 @@ class PositionController {
         $response = new Response();
 
             try {
-                $data = Position::get_all_teacher_positions($this->link);
+                $data = Positions::get_all_teacher_positions($this->link);
                 if(!$data)
                     $response->set('data',array());
                 else
