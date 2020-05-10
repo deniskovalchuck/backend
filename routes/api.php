@@ -54,9 +54,9 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/payment/get_all_payment_type', "\App\Http\Controllers\PaymentController@get_all_payment_type");
 
     /*должности*/
-    $router->postController('/position/add_position', "\App\Http\Controllers\PaymentController@add_position");
-    $router->postController('/position/delete_teacher_position', "\App\Http\Controllers\PaymentController@delete_teacher_position");
-    $router->postController('/position/get_all_teacher_positions', "\App\Http\Controllers\PaymentController@get_all_teacher_positions");
+    $router->postController('/position/add_position', "\App\Http\Controllers\PositionController@add_position");
+    $router->postController('/position/delete_teacher_position', "\App\Http\Controllers\PositionController@delete_teacher_position");
+    $router->postController('/position/get_all_teacher_positions', "\App\Http\Controllers\PositionController@get_all_teacher_positions");
 
     /*специальности*/
     $router->postController('/specilality/get_all_specialization', "\App\Http\Controllers\SpecializationController@get_all_specialization");

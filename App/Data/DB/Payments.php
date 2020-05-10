@@ -3,10 +3,10 @@
 namespace App\Data\DB;
 use Core\Database\Database;
 
-class Payment{
+class Payments{
     /*return string ('Запись уже существует!', 'Запись добавлена!')*/
     public static function add_payment_type(Database $connection, $input_name_payment_type, $input_coefficient){
-        $result = $connection->query('SELECT * FROM add_payment_type(\''.$input_name_payment_type.'\', '.$input_coefficient.')');
+        $result = $connection->query('SELECT * FROM add_payment_type(\''.$input_name_payment_type.'\',\''.$input_coefficient.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }

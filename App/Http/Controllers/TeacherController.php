@@ -88,7 +88,7 @@ class TeacherController {
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
     public  function add_teacher(){
         $response = new Response();
-        if(isset($_POST['$name_input_teacher'])
+        if(isset($_POST['name_input_teacher'])
             && isset($_POST['second_name_input_teacher'])
             && isset($_POST['third_name_input_teacher'])
             && isset($_POST['login_input_teacher'])
@@ -166,22 +166,22 @@ class TeacherController {
 
     public  function get_teacher_info(){
         $response = new Response();
-        if(isset($_POST['$name_input_teacher'])
-            && isset($_POST['$second_name_input_teacher'])
-            && isset($_POST['$third_name_input_teacher'])
-            && isset($_POST['$name_faculty_input_teacher'])
-            && isset($_POST['$name_department_input_teacher'])
-            && isset($_POST['$name_position_input_teacher'])
+        if(isset($_POST['name_input_teacher'])
+            && isset($_POST['second_name_input_teacher'])
+            && isset($_POST['third_name_input_teacher'])
+            && isset($_POST['name_faculty_input_teacher'])
+            && isset($_POST['name_department_input_teacher'])
+            && isset($_POST['name_position_input_teacher'])
 
         )
         {
             try {
-                $data = Teacher::get_teacher_info($this->link,$_POST['$name_input_teacher']
-                    , $_POST['$second_name_input_teacher']
-                    , $_POST['$third_name_input_teacher']
-                    , $_POST['$name_faculty_input_teacher']
-                    , $_POST['$name_department_input_teacher']
-                    , $_POST['$name_position_input_teacher']);
+                $data = Teacher::get_teacher_info($this->link,$_POST['name_input_teacher']
+                    , $_POST['second_name_input_teacher']
+                    , $_POST['third_name_input_teacher']
+                    , $_POST['name_faculty_input_teacher']
+                    , $_POST['name_department_input_teacher']
+                    , $_POST['name_position_input_teacher']);
                 if(!$data)
                     $response->set('data',array());
                 else

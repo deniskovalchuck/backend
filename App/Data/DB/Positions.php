@@ -3,7 +3,7 @@
 namespace App\Data\DB;
 use Core\Database\Database;
 
-class Position{
+class Positions{
 
     /*return string ('Запись уже существует!', 'Запись добавлена!')*/
     public static function add_position(Database $connection, $name_input_position){

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Data\DB\Payment;
 use Core\helpers\Config;
 use Core\helpers\Response;
 
@@ -19,7 +18,7 @@ class PaymentController {
         if(isset($_POST['input_name_payment_type']) && isset($_POST['input_coefficient']))
         {
             try {
-                $data = Payment::add_payment_type($this->link,$_POST['input_name_payment_type'],$_POST['input_coefficient']);
+                $data = \App\Data\DB\Payments::add_payment_type($this->link,$_POST['input_name_payment_type'],$_POST['input_coefficient']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -44,7 +43,7 @@ class PaymentController {
         if(isset($_POST['input_name_payment_type']))
         {
             try {
-                $data = Payment::delete_payment_type($this->link,$_POST['input_name_payment_type']);
+                $data = \App\Data\DB\Payments::delete_payment_type($this->link,$_POST['input_name_payment_type']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -66,7 +65,7 @@ class PaymentController {
     public  function get_all_payment_type(){
         $response = new Response();
             try {
-                $data = Payment::get_all_payment_type($this->link);
+                $data = \App\Data\DB\Payments::get_all_payment_type($this->link);
                 if(!$data)
                     $response->set('data',array());
                 else
