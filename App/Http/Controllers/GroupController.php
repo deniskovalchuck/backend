@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Data\DB\Education;
 use App\Data\DB\Groups;
 use Core\helpers\Config;
 use Core\helpers\Converter;
@@ -68,6 +69,9 @@ class GroupController{
             isset($_POST['sub_input_group']))
         {
             try {
+                $data=Education::get_name_education_type_by_id($this->link,$_POST['education_type_input']);
+
+                    $_POST['education_type_input']=$data[0]['get_name_education_type_by_id'];
                 $data = Groups::delete_student_groups(
                     $this->link,
                     $_POST['abbrevation_input_group'],
