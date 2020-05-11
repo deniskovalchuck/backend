@@ -108,9 +108,8 @@ class GroupController{
         return $response->makeJson();
 
     }
-    public function get_all_groups($faculty_name, $department_name, $specialization_name)
+    public function get_all_groups()
     {
-        $response = new Response();
         $response = new Response();
         if(isset($_POST['faculty_name']) &
             isset($_POST['department_name']) &

@@ -52,7 +52,7 @@ class SpecializationController{
         return $response->makeJson();
     }
 
-    public function get_all_specialization_from_department(){
+        public function get_all_specialization_from_department(){
         $response = new Response();
         if(isset($_POST['department_name'])) {
             try {
@@ -72,6 +72,7 @@ class SpecializationController{
         }
         return $response->makeJson();
     }
+
 
     public function add_spezialization(){
         $response = new Response();
@@ -106,7 +107,7 @@ class SpecializationController{
             isset($_POST['name_specialization_for_delete'])
         ) {
             try {
-                $data = Groups::get_all_groups($this->link,$_POST['name_faculty_for_delete'],
+                $data = Specialization::delete_specialization ($this->link,$_POST['name_faculty_for_delete'],
                     $_POST['name_department_for_delete'],$_POST['name_specialization_for_delete']);
                 if (!$data)
                     $response->set('data', array());
