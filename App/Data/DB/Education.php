@@ -18,6 +18,13 @@ class Education{
         return $arr;
     }
 
+    /*return string ('Типа обучения не существует!', значение)*/
+    public static function get_name_education_type_by_id(Database $connection, $id_input_education_type){
+        $result = $connection->query('SELECT * FROM get_name_education_type_by_id(\''.$id_input_education_type.'\')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
+
     public static function get_all_education_type(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_education_type()');
         $education_type_array = array();
