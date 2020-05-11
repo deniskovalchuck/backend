@@ -24,6 +24,7 @@ class Payment{
         while($row = pg_fetch_assoc($result)){
             $payment_type_array = [
                 'name_input_payment_type' => $row['name_input_payment_type'],
+                'coefficient_input_payment_type' => $row['coefficient_input_payment_type'],
             ];
         }
         return $payment_type_array;
