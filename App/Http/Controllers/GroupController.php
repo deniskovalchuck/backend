@@ -16,13 +16,7 @@ class GroupController{
         $this->link = Config::get('app.database.connection');
     }
 
-    public function add_students_groups($abbrevation_input_group,
-                                        $year_entry_input,
-                                        $name_faculty_input,
-                                        $name_department_input,
-                                        $name_specialization_input,
-                                        $education_type_input,
-                                        $sub_input_group)
+    public function add_students_groups()
     {
         $response = new Response();
         if(isset($_POST['abbrevation_input_group']) &
@@ -61,13 +55,7 @@ class GroupController{
         }
         return $response->makeJson();
     }
-    public function delete_student_groups($abbrevation_input_group,
-                                          $year_entry_input,
-                                          $name_faculty_input,
-                                          $name_department_input,
-                                          $name_specialization_input,
-                                          $education_type_input,
-                                          $sub_input_group)
+    public function delete_student_groups()
     {
         $response = new Response();
 
