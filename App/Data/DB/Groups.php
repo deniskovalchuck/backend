@@ -25,6 +25,7 @@ class Groups{
                 'abr_group' => $row['abr_group'],
                 'year_entry_group' => $row['year_entry_group'],
                 'subgroup' => $row['subgroup'],
+                'id_education_type_group' => $row['id_education_type_group'],
             ];
             $i++;
         }
