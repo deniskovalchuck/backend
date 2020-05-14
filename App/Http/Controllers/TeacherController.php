@@ -100,7 +100,7 @@ class TeacherController {
         )
         {
             try {
-                $data = Teacher::add_teacher($this->link,$_POST['$name_input_teacher']
+                $data = Teacher::add_teacher($this->link,$_POST['name_input_teacher']
                     ,$_POST['second_name_input_teacher']
                     ,$_POST['third_name_input_teacher']
                     ,$_POST['login_input_teacher']

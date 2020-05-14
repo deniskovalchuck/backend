@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Data\DB\Education;
 use App\Data\DB\Groups;
 use Core\helpers\Config;
 use Core\helpers\Converter;
@@ -16,13 +17,7 @@ class GroupController{
         $this->link = Config::get('app.database.connection');
     }
 
-    public function add_students_groups($abbrevation_input_group,
-                                        $year_entry_input,
-                                        $name_faculty_input,
-                                        $name_department_input,
-                                        $name_specialization_input,
-                                        $education_type_input,
-                                        $sub_input_group)
+    public function add_students_groups()
     {
         $response = new Response();
         if(isset($_POST['abbrevation_input_group']) &
@@ -61,13 +56,7 @@ class GroupController{
         }
         return $response->makeJson();
     }
-    public function delete_student_groups($abbrevation_input_group,
-                                          $year_entry_input,
-                                          $name_faculty_input,
-                                          $name_department_input,
-                                          $name_specialization_input,
-                                          $education_type_input,
-                                          $sub_input_group)
+    public function delete_student_groups()
     {
         $response = new Response();
 
@@ -80,6 +69,9 @@ class GroupController{
             isset($_POST['sub_input_group']))
         {
             try {
+                $data=Education::get_name_education_type_by_id($this->link,$_POST['education_type_input']);
+
+                    $_POST['education_type_input']=$data[0]['get_name_education_type_by_id'];
                 $data = Groups::delete_student_groups(
                     $this->link,
                     $_POST['abbrevation_input_group'],
