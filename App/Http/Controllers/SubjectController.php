@@ -80,6 +80,7 @@ class SubjectController {
         return $response->makeJson();
     }
 
+    //предметы, которые может вести препод
     public  function get_teacher_subjects(){
         $response = new Response();
         if(isset($_POST['login_input_teacher']))

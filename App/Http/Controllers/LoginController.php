@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\AuthService;
+use Core\helpers\Config;
+use Core\helpers\Response;
 
 class LoginController {
 
@@ -27,4 +29,11 @@ class LoginController {
     }
     public function update_token()
     {}
+    public function get_me()
+    {
+        $response = new Response();
+        $response->set('data',json_encode(Config::get('app.user')));
+        $response->set('result','success');
+        return $response->make();
+    }
 }

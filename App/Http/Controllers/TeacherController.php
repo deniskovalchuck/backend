@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\DB\Positions;
 use App\Data\DB\Teacher;
 use Core\helpers\Config;
 use Core\helpers\Response;
@@ -138,6 +139,11 @@ class TeacherController {
         )
         {
             try {
+
+
+                    $datas=Positions::get_position_by_id($this->link, $_POST['name_position_input_teacher']);
+                if(is_array($datas))
+                $_POST['name_position_input_teacher']=$datas[0]['get_position_by_id'];
                 $data = Teacher::delete_teacher($this->link,$_POST['name_input_teacher']
                     , $_POST['second_name_input_teacher']
                     , $_POST['third_name_input_teacher']
@@ -231,6 +237,7 @@ class TeacherController {
         return $response->makeJson();
     }
 
+    //переносы
     public  function create_sub_for_teacher( ){
         $response = new Response();
         if(isset($_POST['login_replaceable_teacher'])
