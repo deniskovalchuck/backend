@@ -19,6 +19,13 @@ class Positions{
         return $arr;
     }
 
+    /*return string ('Запись успешно удалена!', 'Записи нет в базе!')*/
+    public static function get_position_by_id(Database $connection, $id_input_position){
+        $result = $connection->query('SELECT * FROM get_position_by_id('.$id_input_position.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
+
     public static function get_all_teacher_positions(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_teacher_positions()');
         $positions_array = array();
