@@ -5,18 +5,18 @@ use Core\Database\Database;
 
 //Уроки, занятия, связанные с днями недель и с преподами. Сам УРОК
 
-
 class Lesson{
     /*return integer (-1 - error)*/
-    public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_type_education, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $start_input_date, $end_input_date){
-        $result = $connection->query('SELECT * get_id_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_type_education.'\', \''.$name_input_payment_type.'\', \''.$num_input_lesson.'\', \''.$week_input_day.'\', \''.$week_input_type.'\', \''.$start_input_date.'\', \''.$end_input_date.'\')');
+    public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_type_education, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $subject_name){
+        $result = $connection->query('SELECT * get_id_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_type_education.'\', \''.$name_input_payment_type.'\', \''.$num_input_lesson.'\', \''.$week_input_day.'\', \''.$week_input_type.'\', \''.$subject_name.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return integer (-1 - error)*/
-    public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_education_type, $name_input_payment_type, $week_input_type, $week_input_day, $num_input_lesson, $start_input_date, $end_input_date){
-        $result = $connection->query('SELECT * add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_education_type.', \''.$name_input_payment_type.'\', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\', \''.$start_input_date.'\', \''.$end_input_date.'\')');
+    public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_education_type,
+                                      $name_input_payment_type, $week_input_type, $week_input_day, $num_input_lesson,$subject_name){
+        $result = $connection->query('SELECT * add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_education_type.', \''.$name_input_payment_type.'\', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
@@ -27,7 +27,7 @@ class Lesson{
         $arr = pg_fetch_all($result);
         return $arr;
     }
-
+    //таблица tye lesson
     public static function get_all_type_lesson(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_type_lesson()');
         $type_lessons_array = array();

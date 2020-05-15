@@ -4,6 +4,7 @@ $router->postController('/login', "\App\Http\Controllers\LoginController@postlog
 
 $router->group(['before' => 'auth'], function($router){
     $router->postController('/update_token', "\App\Http\Controllers\LoginController@update_token");
+    $router->postController('/get_me', "\App\Http\Controllers\LoginController@get_me");
 
     /*аудитории*/
     $router->postController('/classrooms/get_all_bulding', "\App\Http\Controllers\ClassroomController@get_all_bulding");
