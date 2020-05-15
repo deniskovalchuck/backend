@@ -64,27 +64,27 @@ class Teacher{
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
     public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $photo_input_teacher){
-        $result = $connection->query('SELECT * add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\',\''.$photo_input_teacher.'\')');
+        $result = $connection->query('SELECT * FROM   add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\',\''.$photo_input_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
     public static function add_teacher_with_photo(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
-        $result = $connection->query('SELECT * add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\)');
+        $result = $connection->query('SELECT * FROM  add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return string ('Запись успешно удалена!', 'Записи не существует!')*/
     public static function delete_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
-        $result = $connection->query('SELECT * delete_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\')');
+        $result = $connection->query('SELECT * FROM  delete_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
     
     public static function get_teacher_info(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
-        $result = $connection->query('SELECT * get_teacher_info(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\', \''.$name_position_input_teacher.'\')');
+        $result = $connection->query('SELECT * FROM  get_teacher_info(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\', \''.$name_position_input_teacher.'\')');
         $teacher_info = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){
@@ -105,25 +105,25 @@ class Teacher{
     }
 
     public static function get_teacher_login(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher){
-        $result = $connection->query('SELECT * get_teacher_login(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\')');
+        $result = $connection->query('SELECT * FROM  get_teacher_login(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public static function create_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
-        $result = $connection->query('SELECT * create_sub_for_teacher(\''.$login_replaceable_teacher.'\',\''.$login_replacing_teacher.'\',\''.$date_sub_teacher.'\')');
+        $result = $connection->query('SELECT * FROM  create_sub_for_teacher(\''.$login_replaceable_teacher.'\',\''.$login_replacing_teacher.'\',\''.$date_sub_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public static function delete_sub_for_teacher(Database $connection, $login_replaceable_teacher, $login_replacing_teacher, $date_sub_teacher){
-        $result = $connection->query('SELECT * delete_sub_for_teacher(\''.$login_replaceable_teacher.'\',\''.$login_replacing_teacher.'\',\''.$date_sub_teacher.'\')');
+        $result = $connection->query('SELECT * FROM  delete_sub_for_teacher(\''.$login_replaceable_teacher.'\',\''.$login_replacing_teacher.'\',\''.$date_sub_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public static function get_all_teacher_positions(Database $connection){
-        $result = $connection->query('SELECT * get_all_teacher_positions()');
+        $result = $connection->query('SELECT * FROM  get_all_teacher_positions()');
         $teacher_positions = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){

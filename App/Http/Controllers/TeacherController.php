@@ -95,7 +95,6 @@ class TeacherController {
             && isset($_POST['name_faculty_input_teacher'])
             && isset($_POST['name_department_input_teacher'])
             && isset($_POST['name_position_input_teacher'])
-            && isset($_POST['input_email'])
             && isset($_POST['photo_input_teacher'])
         )
         {
@@ -107,7 +106,6 @@ class TeacherController {
                     ,$_POST['name_faculty_input_teacher']
                     ,$_POST['name_department_input_teacher']
                     ,$_POST['name_position_input_teacher']
-                    ,$_POST['input_email']
                     ,$_POST['photo_input_teacher']);
                 if(!$data)
                     $response->set('data',array());
