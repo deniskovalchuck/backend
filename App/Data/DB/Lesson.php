@@ -27,20 +27,6 @@ class Lesson{
         $arr = pg_fetch_all($result);
         return $arr;
     }
-    //таблица tye lesson
-    public static function get_all_type_lesson(Database $connection){
-        $result = $connection->query('SELECT * FROM get_all_type_lesson()');
-        $type_lessons_array = array();
-        $i=0;
-        while($row = pg_fetch_assoc($result)){
-            $type_lessons_array[$i] = [
-                'type_lessons' => $row['type_lessons'],
-            ];
-            $i++;
-
-        }
-        return $type_lessons_array;
-    }
 
     public static function get_all_lessons(Database $connection){
         $result = $connection->query('SELECT * FROM get_all_lessons()');
