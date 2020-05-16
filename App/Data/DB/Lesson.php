@@ -60,6 +60,23 @@ class Lesson{
         return $lessons_array;
     }
 
+    public static function get_lesson_by_id(Database $connection, $id_input_lesson){
+        $result = $connection->query('SELECT * FROM get_lesson_by_id('.$id_input_lesson.')');
+        $lessons_array = array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $lessons_array[$i] = [
+                'num_lesson' => $row['num_lesson'],
+                'id_week_day' => $row['id_week_day'],
+                'id_type_lesson' => $row['id_type_lesson'],
+                'id_payment_type' => $row['id_payment_type'],
+            ];
+            $i++;
+
+        }
+        return $lessons_array;
+    }
+
     public static function get_all_lessons_by_group(Database $connection, $abbrevation_input_group, $year_entry_input, $name_faculty_input, $name_department_input, $name_specialization_input, $education_type_input, $sub_input_group){
         $result = $connection->query('SELECT * get_all_lessons_by_group(\''.$abbrevation_input_group.'\', \''.$year_entry_input.', \''.$name_faculty_input.', \''.$name_department_input.'\', \''.$name_specialization_input.'\', \''.$education_type_input.'\', \''.$sub_input_group.'\')');
         $group_lessons_array = array();
