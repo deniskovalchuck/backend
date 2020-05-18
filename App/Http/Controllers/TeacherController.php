@@ -141,7 +141,7 @@ class TeacherController {
             try {
 
 
-                    $datas=Positions::get_position_by_id($this->link, $_POST['name_position_input_teacher']);
+                $datas=Positions::get_position_by_id($this->link, $_POST['name_position_input_teacher']);
                 if(is_array($datas))
                 $_POST['name_position_input_teacher']=$datas[0]['get_position_by_id'];
                 $data = Teacher::delete_teacher($this->link,$_POST['name_input_teacher']
