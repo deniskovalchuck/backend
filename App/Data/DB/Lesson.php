@@ -83,7 +83,7 @@ class Lesson{
     }
 
     public static function get_all_lessons_by_teacher(Database $connection, $login_input_teacher){
-        $result = $connection->query('SELECT * get_all_lessons_by_teacher(\''.$login_input_teacher.'\')');
+        $result = $connection->query('SELECT * FROM get_all_lessons_by_teacher(\''.$login_input_teacher.'\')');
         $teacher_lessons_array = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){

@@ -62,8 +62,7 @@ class LessonController {
             && isset($_POST['week_input_type'])
             && isset($_POST['week_input_day'])
             && isset($_POST['num_input_lesson'])
-            && isset($_POST['start_input_date'])
-            && isset($_POST['end_input_date'])
+            && isset($_POST['subject_name'])
         )
         {
             try {
@@ -72,9 +71,7 @@ class LessonController {
                     ,$_POST['name_input_payment_type']
                     ,$_POST['week_input_type']
                     ,$_POST['week_input_day']
-                    ,$_POST['num_input_lesson']
-                    ,$_POST['start_input_date']
-                    ,$_POST['end_input_date']);
+                    ,$_POST['num_input_lesson'],$_POST['subject_name']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -200,6 +197,7 @@ class LessonController {
 
     public function get_all_lessons_by_teacher(){
         $response = new Response();
+
         if( isset($_POST['login_input_teacher']))
         {
             try {
