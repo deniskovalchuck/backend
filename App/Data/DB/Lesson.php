@@ -14,9 +14,8 @@ class Lesson{
     }
 
     /*return integer (-1 - error)*/
-    public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_education_type,
-                                      $week_input_type, $week_input_day, $num_input_lesson,$subject_name){
-        $result = $connection->query('SELECT * add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_education_type.', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\')');
+    public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_payment_type, $week_input_type, $week_input_day, $num_input_lesson,$subject_name){
+        $result = $connection->query('SELECT * add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
