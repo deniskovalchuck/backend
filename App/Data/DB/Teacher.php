@@ -83,8 +83,8 @@ class Teacher{
         return $arr;
     }
     
-    public static function get_teacher_info(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
-        $result = $connection->query('SELECT * FROM get_teacher_info(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\', \''.$name_position_input_teacher.'\')');
+    public static function get_teacher_info(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher){
+        $result = $connection->query('SELECT * FROM get_teacher_info(\''.$name_input_teacher.'\', \''.$second_name_input_teacher.'\', \''.$third_name_input_teacher.'\', \''.$name_faculty_input_teacher.'\', \''.$name_department_input_teacher.'\')');
         $teacher_info = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){
