@@ -45,6 +45,7 @@ class Type_Lesson{
         while($row = pg_fetch_assoc($result)){
             $type_lessons_array[$i] = [
                 'type_lessons' => $row['type_lessons'],
+                'name_type_education' => $row['name_type_education'],
             ];
             $i++;
 
