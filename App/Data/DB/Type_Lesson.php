@@ -52,4 +52,18 @@ class Type_Lesson{
         }
         return $type_lessons_array;
     }
+
+    public static function get_all_type_lesson_by_name_type_education(Database $connection, $name_input_type_education){
+        $result = $connection->query('SELECT * FROM get_all_type_lesson_by_name_type_education('.$name_input_type_education.')');
+        $type_lessons_array = array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $type_lessons_array[$i] = [
+                'name_input_type_lesson' => $row['name_input_type_lesson'],
+            ];
+            $i++;
+
+        }
+        return $type_lessons_array;
+    }
 }
