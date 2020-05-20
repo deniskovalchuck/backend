@@ -150,8 +150,7 @@ class AuthService
 
                     Config::set('app.database.connection',$link);
                     Config::set('app.database.data',$postData);
-
-                    $response->set('data',json_encode(self::get_user_data($link,$postData['login'])));
+                    $response->set('data',(self::get_user_data($link,$postData['login']))[0]);
                     $response->set('result','success');
                     return $response;
                 }

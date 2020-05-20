@@ -57,12 +57,14 @@ class LessonController {
     public function add_lesson(){
         $response = new Response();
         if( isset($_POST['name_input_type_lesson'])
-        && isset($_POST['name_input_education_type'])
+            && isset($_POST['name_input_education_type'])
             && isset($_POST['name_input_payment_type'])
-            && isset($_POST['week_input_type'])
-            && isset($_POST['week_input_day'])
-            && isset($_POST['num_input_lesson'])
-            && isset($_POST['subject_name'])
+            && isset($_POST['week_input_type'])//
+            && isset($_POST['week_input_day'])//
+            && isset($_POST['num_input_lesson'])//
+            && isset($_POST['subject_name'])//
+            && isset($_POST['groups'])//
+            && isset($_POST['teachers'])//
         )
         {
             try {
