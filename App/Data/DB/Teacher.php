@@ -89,6 +89,7 @@ class Teacher{
         $i=0;
         while($row = pg_fetch_assoc($result)){
             $teacher_info[$i] = [
+                'id_input_teacher' => $row['id_input_teacher'],
                 'name_teacher' => $row['name_teacher'], 
                 'second_name_teacher' => $row['second_name_teacher'], 
                 'third_name_teacher' => $row['third_name_teacher'], 
