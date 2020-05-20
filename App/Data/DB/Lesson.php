@@ -7,16 +7,16 @@ use Core\Database\Database;
 
 class Lesson{
     /*return integer (-1 - error)*/
-    public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_type_education, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $subject_name){
-        $result = $connection->query('SELECT * get_id_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_type_education.'\', \''.$name_input_payment_type.'\', \''.$num_input_lesson.'\', \''.$week_input_day.'\', \''.$week_input_type.'\', \''.$subject_name.'\')');
+    public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $subject_name){
+        $result = $connection->query('SELECT * get_id_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\', \''.$num_input_lesson.'\', \''.$week_input_day.'\', \''.$week_input_type.'\', \''.$subject_name.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return integer (-1 - error)*/
     public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_education_type,
-                                      $name_input_payment_type, $week_input_type, $week_input_day, $num_input_lesson,$subject_name){
-        $result = $connection->query('SELECT * add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_education_type.', \''.$name_input_payment_type.'\', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\')');
+                                      $week_input_type, $week_input_day, $num_input_lesson,$subject_name){
+        $result = $connection->query('SELECT * add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_education_type.', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
