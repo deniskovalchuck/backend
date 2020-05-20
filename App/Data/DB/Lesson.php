@@ -90,8 +90,7 @@ class Lesson{
                 'id_type_lesson' => $row['id_type_lesson'], 
                 'id_payment_type_on_lesson' => $row['id_payment_type_on_lesson'], 
                 'num_lesson' => $row['num_lesson'], 
-                'id_lesson' => $row['id_lesson'], 
-                'id_week_day' => $row['id_week_day'], 
+                'week_day' => $row['week_day'], 
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
             ];
