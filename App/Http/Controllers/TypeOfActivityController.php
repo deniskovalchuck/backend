@@ -50,23 +50,12 @@ class TypeOfActivityController {
         if(isset($_POST['type']))
         {
             try {
-                $data = Type_Lesson::get_all_by_type($this->link,$_POST['type']);
+                $data = Type_Lesson::get_all_type_lesson_by_name_type_education($this->link,$_POST['type']);
                 if(!$data)
                     $response->set('data',array());
                 else
                 {
-                    for($i=0;$i<count($data);$i++)
-                    {
-                        if($data[$i]['name_type_education']=='О')
-                        {
-                            $data[$i]['name_type_education']='Обучение';
-                        }
-                        else
-                        {
-                            $data[$i]['name_type_education']='Сессия';
 
-                        }
-                    }
                     $response->set('data',$data);
                 }
                 $response->set('result','success');
