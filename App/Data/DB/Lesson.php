@@ -106,8 +106,8 @@ class Lesson{
         return $arr;
     }
 
-    public static function add_groups_on_lesson(Database $connection, $id_input_lesson, $abbrevation_input_group, $year_entry_input, $name_faculty_input, $name_department_input, $name_specialization_input, $education_type_input, $sub_input_group){
-        $result = $connection->query('SELECT * FROM add_groups_on_lesson('.$id_input_lesson.', \''.$abbrevation_input_group.'\', '.$year_entry_input.', \''.$name_faculty_input.'\', \''.$name_department_input.'\', \''.$name_specialization_input.'\', \''.$education_type_input.'\', \''.$sub_input_group.'\')');
+    public static function add_groups_on_lesson(Database $connection, $id_input_lesson, $abbrevation_input_group, $year_entry_input, $name_faculty_input, $name_department_input, $name_specialization_input, $sub_input_group){
+        $result = $connection->query('SELECT * FROM add_groups_on_lesson('.$id_input_lesson.', \''.$abbrevation_input_group.'\', '.$year_entry_input.', \''.$name_faculty_input.'\', \''.$name_department_input.'\', \''.$name_specialization_input.'\', \''.$sub_input_group.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
