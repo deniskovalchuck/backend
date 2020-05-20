@@ -39,7 +39,7 @@ class Payments{
     }
 
     public static function get_payment_type_by_id(Database $connection, $id_input_payment_type){
-        $result = $connection->query('SELECT * FROM get_all_payment_type('.$id_input_payment_type.')');
+        $result = $connection->query('SELECT * FROM get_payment_type_by_id('.$id_input_payment_type.')');
         $payment_type_array = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){
