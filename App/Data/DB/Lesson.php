@@ -118,6 +118,7 @@ class Lesson{
                 'week_day_type' => $row['week_day_type'], 
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
+                'id_subject_on_lesson' => $row['id_subject_on_lesson'],
                 'id_classroom' => $row['id_classroom'],
             ];
             $i++;
