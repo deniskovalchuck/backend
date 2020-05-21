@@ -99,6 +99,24 @@ class Lesson{
         return $teacher_lessons_array;
     }
 
+    public static function get_all_lessons_by_teacher_by_week(Database $connection, $login_input_teacher, $start_week_date, $end_week_date){
+        $result = $connection->query('SELECT * FROM get_all_lessons_by_teacher_by_week(\''.$login_input_teacher.'\', \''.$start_week_date.'\'::date, \''.$end_week_date.'\'::date)');
+        $teacher_lessons_array = array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $teacher_lessons_array[$i]  = [
+                'id_type_lesson' => $row['id_type_lesson'], 
+                'id_payment_type_on_lesson' => $row['id_payment_type_on_lesson'], 
+                'num_lesson' => $row['num_lesson'], 
+                'week_day' => $row['week_day'], 
+                'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
+                'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
+            ];
+            $i++;
+        }
+        return $teacher_lessons_array;
+    }
+
     public static function add_teachers_on_lesson(Database $connection, $login_input_teacher, $id_input_lesson){
         $result = $connection->query('SELECT * FROM add_teachers_on_lesson(\''.$login_input_teacher.'\', '.$id_input_lesson.')');
         $arr = pg_fetch_all($result);
