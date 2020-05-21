@@ -379,6 +379,15 @@ class LessonController {
                 {
                     $result[$i-1]['Tuesday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Tuesday']=count($timetable_Data[$key][$i]);
+                    if($result[$i-1]['count_Tuesday']==2)
+                    {
+                        if($result[$i-1]['Tuesday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['Tuesday'][0]['week_day_type'];
+                            $result[$i-1]['Tuesday'][0]['week_day_type']=$result[$i-1]['Tuesday'][1]['week_day_type'];
+                            $result[$i-1]['Tuesday'][1]['week_day_type']=$tmp;
+                        }
+                    }
                 }
                 else
                 {
@@ -390,6 +399,15 @@ class LessonController {
                 {
                     $result[$i-1]['Wednesday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Wednesday']=count($timetable_Data[$key][$i]);
+                    if($result[$i-1]['count_Wednesday']==2)
+                    {
+                        if($result[$i-1]['Wednesday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['Tuesday'][0]['week_day_type'];
+                            $result[$i-1]['Wednesday'][0]['week_day_type']=$result[$i-1]['Wednesday'][1]['week_day_type'];
+                            $result[$i-1]['Wednesday'][1]['week_day_type']=$tmp;
+                        }
+                    }
                 }
                 else
                 {
@@ -402,13 +420,20 @@ class LessonController {
                 {
                     $result[$i-1]['Thursday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Thursday']=count($timetable_Data[$key][$i]);
-
+                    if($result[$i-1]['count_Thursday']==2)
+                    {
+                        if($result[$i-1]['Thursday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['Thursday'][0]['week_day_type'];
+                            $result[$i-1]['Thursday'][0]['week_day_type']=$result[$i-1]['Thursday'][1]['week_day_type'];
+                            $result[$i-1]['Thursday'][1]['week_day_type']=$tmp;
+                        }
+                    }
                 }
                 else
                 {
                     $result[$i-1]['Thursday']=null;
                     $result[$i-1]['count_Thursday']=0;
-
                 }
 
                 $key="Пятница";
@@ -416,7 +441,15 @@ class LessonController {
                 {
                     $result[$i-1]['Friday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Friday']=count($timetable_Data[$key][$i]);
-
+                    if($result[$i-1]['count_Friday']==2)
+                    {
+                        if($result[$i-1]['Friday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['Friday'][0]['week_day_type'];
+                            $result[$i-1]['Friday'][0]['week_day_type']=$result[$i-1]['Friday'][1]['week_day_type'];
+                            $result[$i-1]['Friday'][1]['week_day_type']=$tmp;
+                        }
+                    }
                 }
                 else
                 {
@@ -430,26 +463,40 @@ class LessonController {
                 {
                     $result[$i-1]['Saturday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Saturday']=count($timetable_Data[$key][$i]);
-
+                    if($result[$i-1]['count_Saturday']==2)
+                    {
+                        if($result[$i-1]['Saturday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['Saturday'][0]['week_day_type'];
+                            $result[$i-1]['Saturday'][0]['week_day_type']=$result[$i-1]['Saturday'][1]['week_day_type'];
+                            $result[$i-1]['Saturday'][1]['week_day_type']=$tmp;
+                        }
+                    }
                 }
                 else
                 {
                     $result[$i-1]['Saturday']=null;
                     $result[$i-1]['count_Saturday']=0;
-
                 }
                 $key="Воскресенье";
                 if(array_key_exists($i,$timetable_Data[$key]))
                 {
                     $result[$i-1]['Sunday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Sunday']=count($timetable_Data[$key][$i]);
-
+                    if($result[$i-1]['count_Sunday']==2)
+                    {
+                        if($result[$i-1]['Sunday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['Sunday'][0]['week_day_type'];
+                            $result[$i-1]['Sunday'][0]['week_day_type']=$result[$i-1]['Sunday'][1]['week_day_type'];
+                            $result[$i-1]['Sunday'][1]['week_day_type']=$tmp;
+                        }
+                    }
                 }
                 else
                 {
                     $result[$i-1]['Sunday']=null;
                     $result[$i-1]['count_Sunday']=0;
-
                 }
 
             }
