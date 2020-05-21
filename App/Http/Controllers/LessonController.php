@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\DB\Classrooms;
 use App\Data\DB\Groups;
 use App\Data\DB\Lesson;
 use App\Data\DB\Subjects;
@@ -27,8 +28,7 @@ class LessonController {
             && isset($_POST['num_input_lesson'])
             && isset($_POST['week_input_day'])
             && isset($_POST['week_input_type'])
-            && isset($_POST['start_input_date'])
-            && isset($_POST['end_input_date'])
+            && isset($_POST['id_classroom'])
         )
         {
             try {
@@ -37,7 +37,7 @@ class LessonController {
                     , $_POST['name_input_payment_type']
                     , $_POST['num_input_lesson']
                     , $_POST['week_input_day']
-                    , $_POST['week_input_type']);
+                    , $_POST['week_input_type'],$_POST['id_classroom']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -69,6 +69,9 @@ class LessonController {
             && isset($_POST['top_or_bottom_week'])//Выберите верхнюю или нижнюю неделю
             && isset($_POST['selected_groups'])//список групп
             && isset($_POST['selected_teachers'])//список преподователей
+               && isset($_POST['housing'])//список преподователей
+               && isset($_POST['class'])//список преподователей
+
         )
         {
             if($_POST['top_or_bottom_week']=="ALL")
@@ -76,17 +79,17 @@ class LessonController {
                 $this->addlesson($_POST['number_lesson'],$_POST['subject_name'],
                     $_POST['payment_type'],$_POST['lesson_type'],
                     $_POST['lesson_type_name'],$_POST['day'],'В',
-                    $_POST['selected_groups'],$_POST['selected_teachers']);
+                    $_POST['selected_groups'],$_POST['selected_teachers'],$_POST['housing'],$_POST['class']);
                 $this->addlesson($_POST['number_lesson'],$_POST['subject_name'],
                     $_POST['payment_type'],$_POST['lesson_type'],
                     $_POST['lesson_type_name'],$_POST['day'],'Н',
-                    $_POST['selected_groups'],$_POST['selected_teachers']);
+                    $_POST['selected_groups'],$_POST['selected_teachers'],$_POST['housing'],$_POST['class']);
             }else
             {
                 $this->addlesson($_POST['number_lesson'],$_POST['subject_name'],
                     $_POST['payment_type'],$_POST['lesson_type'],
                     $_POST['lesson_type_name'],$_POST['day'],$_POST['top_or_bottom_week'],
-                    $_POST['selected_groups'],$_POST['selected_teachers']);
+                    $_POST['selected_groups'],$_POST['selected_teachers'],$_POST['housing'],$_POST['class']);
             }
             $response->set('result','success');
         }
@@ -121,7 +124,7 @@ class LessonController {
         }
         return $response->makeJson();
     }
-
+/*
     public function get_all_type_lesson(){
         $response = new Response();
 
@@ -140,7 +143,7 @@ class LessonController {
 
         return $response->makeJson();
     }
-
+*/
     public function get_all_lessons(){
         $response = new Response();
         if( isset($_POST['name_input_education_type']))
@@ -211,7 +214,9 @@ class LessonController {
                 $data = Lesson::get_all_lessons_by_teacher($this->link,$_POST['login_input_teacher']);
                 if($data) {
                     $timetable_Data = $this->generation_timetable($data);
-                    $response->set('data',$timetable_Data);
+                   $result=$this->gen_table_Step2($timetable_Data);
+
+                    $response->set('data',$result);
                     $response->set('result','success');
 
                 }
@@ -231,17 +236,17 @@ class LessonController {
 
 
     private function addlesson($number_lesson,$subject_name,$payment_type,$lesson_type,
-                               $lesson_type_name,$day,$top_or_bottom_week,$selected_groups,$selected_teachers){
+                               $lesson_type_name,$day,$top_or_bottom_week,$selected_groups,$selected_teachers,$num_building,$num_class){
         try {
             $data = Lesson::add_lesson($this->link,$lesson_type_name,$payment_type,$day,$top_or_bottom_week,
-            $number_lesson,$subject_name);
+            $number_lesson,$subject_name,$num_building,$num_class);
+
             if($data!=null)
             {
                 foreach ($selected_teachers as $item)
                 {
                     $datateacher = Teacher::get_teacher_login($this->link,$item['step3_selected_teachers'][0],$item['step3_selected_teachers'][1],$item['step3_selected_teachers'][2],
                         $item['step3_selected_faculty'],$item['step3_selected_department']);
-
                     Lesson::add_teachers_on_lesson($this->link,$datateacher[0]['get_teacher_login'],$data[0]['add_lesson']);
                 }
                 foreach ($selected_groups as $item)
@@ -278,38 +283,177 @@ class LessonController {
                 $timetable_data[$item]=array();
             }
             //обрабатываем данные
+        //максимальная по номеру пара
+        $timetable_data['max_num_lesson']=1;
         foreach ($timetable_source as $item)
         {
+            if($item['num_lesson']> $timetable_data['max_num_lesson'])
+                $timetable_data['max_num_lesson']=$item['num_lesson'];
             if(!array_key_exists($item['num_lesson'],$timetable_data[$item['week_day']]))
                 $timetable_data[$item['week_day']][$item['num_lesson']]=array();
             //получаем название предмета
             $subject_data=Subjects::get_teacher_subjects_by_id($this->link,$item['id_subject_on_lesson']);
             if($subject_data)
             {
-                //получили название предмета
                 $subject_name=$subject_data[0]['get_teacher_subjects_by_id'];
-                //создали ключи
-                if(!array_key_exists($subject_name,$timetable_data[$item['week_day']][$item['num_lesson']])) {
-                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name] = array();
-                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['groups']=array();
-                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['teachers']=array();
-                }
-                $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
-                if($groupdata)
+                $found =false;
+                for($k=0; $k<count($timetable_data[$item['week_day']][$item['num_lesson']]);$k++)
                 {
-                    foreach ($groupdata as $group)
+                    if($timetable_data[$item['week_day']][$item['num_lesson']][$k]['name']==$subject_name
+                    && $timetable_data[$item['week_day']][$item['num_lesson']][$k]['week_day_type'] == $item['week_day_type'])
                     {
-                        array_push($timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['groups'],
-                        $group['abr_group'].$group['year_entry_group'].$group['subgroup']);
+                        $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
+                        if($groupdata)
+                        {
+                            foreach ($groupdata as $group)
+                            {
+                                array_push($timetable_data[$item['week_day']][$item['num_lesson']][$k]['groups'],
+                                    $group['abr_group'].$group['year_entry_group'].$group['subgroup']);
+                            }
+                            //дописать получениее аудитории
+                            $d = Classrooms::get_num_building_and_class_by_ID($this->link,$item['id_classroom']);
+                            if($d)
+                                $timetable_data[$item['week_day']][$item['num_lesson']][$k]['classroom']=$d;
+                        }
+                        $found=true;
+                        break;
                     }
                 }
-                else
-                    return array();
+                if(!$found)
+                {
+                    $dat=array();
+                    $dat['name']=$subject_name;
+                    $dat['classroom']=array();
+                    $dat['week_day_type']=$item['week_day_type'];
+                    $dat['groups']=array();
+                    $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
+                    if($groupdata) {
+                        foreach ($groupdata as $group) {
+                            array_push($dat['groups'],
+                                $group['abr_group'] . $group['year_entry_group'] . $group['subgroup']);
+                        }
+                        $d = Classrooms::get_num_building_and_class_by_ID($this->link, $item['id_classroom']);
+                        if ($d)
+                            $dat['classroom'] = $d;
+                    }
+                    array_push($timetable_data[$item['week_day']][$item['num_lesson']],$dat);
+                }
 
             }
         }
 
         return $timetable_data;
     }
+    private function gen_table_Step2($timetable_Data)
+    {
+        $result=array();
 
+        if($timetable_Data!=null)
+            //по строкам
+            for($i=1;$i<$timetable_Data['max_num_lesson']+1;$i++)
+            {
+                $result[$i-1]=array();
+                //по столбцам
+                $key="Понедельник";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['monday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_monday']=count($timetable_Data[$key][$i]);
+                    if($result[$i-1]['count_monday']==2)
+                    {
+                        if($result[$i-1]['monday'][0]['week_day_type']=='H')
+                        {
+                            $tmp = $result[$i-1]['monday'][0]['week_day_type'];
+                            $result[$i-1]['monday'][0]['week_day_type']=$result[$i-1]['monday'][1]['week_day_type'];
+                            $result[$i-1]['monday'][1]['week_day_type']=$tmp;
+                        }
+                    }
+                }
+                else
+                {
+                    $result[$i-1]['monday']=null;
+                    $result[$i-1]['count_monday']=0;
+                }
+                $key="Вторник";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['Tuesday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_Tuesday']=count($timetable_Data[$key][$i]);
+                }
+                else
+                {
+                    $result[$i-1]['Tuesday']=null;
+                    $result[$i-1]['count_Tuesday']=0;
+                }
+                $key="Среда";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['Wednesday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_Wednesday']=count($timetable_Data[$key][$i]);
+                }
+                else
+                {
+                    $result[$i-1]['Wednesday']=null;
+                    $result[$i-1]['count_Wednesday']=0;
+                }
+
+                $key="Четверг";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['Thursday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_Thursday']=count($timetable_Data[$key][$i]);
+
+                }
+                else
+                {
+                    $result[$i-1]['Thursday']=null;
+                    $result[$i-1]['count_Thursday']=0;
+
+                }
+
+                $key="Пятница";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['Friday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_Friday']=count($timetable_Data[$key][$i]);
+
+                }
+                else
+                {
+                    $result[$i-1]['Friday']=null;
+                    $result[$i-1]['count_Friday']=0;
+
+                }
+
+                $key="Суббота";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['Saturday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_Saturday']=count($timetable_Data[$key][$i]);
+
+                }
+                else
+                {
+                    $result[$i-1]['Saturday']=null;
+                    $result[$i-1]['count_Saturday']=0;
+
+                }
+                $key="Воскресенье";
+                if(array_key_exists($i,$timetable_Data[$key]))
+                {
+                    $result[$i-1]['Sunday']=$timetable_Data[$key][$i];
+                    $result[$i-1]['count_Sunday']=count($timetable_Data[$key][$i]);
+
+                }
+                else
+                {
+                    $result[$i-1]['Sunday']=null;
+                    $result[$i-1]['count_Sunday']=0;
+
+                }
+
+            }
+        return $result;
+
+    }
 }

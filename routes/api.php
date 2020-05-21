@@ -44,7 +44,7 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/lessons/get_id_lesson', "\App\Http\Controllers\LessonController@get_id_lesson");
     $router->postController('/lessons/add_lesson', "\App\Http\Controllers\LessonController@add_lesson");
     $router->postController('/lessons/delete_lesson', "\App\Http\Controllers\LessonController@delete_lesson");
-    $router->postController('/lessons/get_all_type_lesson', "\App\Http\Controllers\LessonController@get_all_type_lesson");
+    //$router->postController('/lessons/get_all_type_lesson', "\App\Http\Controllers\LessonController@get_all_type_lesson");
     $router->postController('/lessons/get_all_lessons', "\App\Http\Controllers\LessonController@get_all_lessons");
     $router->postController('/lessons/get_all_lessons_by_group', "\App\Http\Controllers\LessonController@get_all_lessons_by_group");
     $router->postController('/lessons/get_all_lessons_by_teacher', "\App\Http\Controllers\LessonController@get_all_lessons_by_teacher");
