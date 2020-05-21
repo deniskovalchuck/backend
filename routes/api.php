@@ -48,6 +48,7 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/lessons/get_all_lessons', "\App\Http\Controllers\LessonController@get_all_lessons");
     $router->postController('/lessons/get_all_lessons_by_group', "\App\Http\Controllers\LessonController@get_all_lessons_by_group");
     $router->postController('/lessons/get_all_lessons_by_teacher', "\App\Http\Controllers\LessonController@get_all_lessons_by_teacher");
+    $router->postController('/lessons/get_all_lessons_by_week', "\App\Http\Controllers\LessonController@get_all_lessons_by_week");
 
     /*типы оплат*/
     $router->postController('/payment/add_payment_type', "\App\Http\Controllers\PaymentController@add_payment_type");

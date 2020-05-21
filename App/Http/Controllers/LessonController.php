@@ -232,7 +232,36 @@ class LessonController {
         }
         return $response->makeJson();
     }
+    public function get_all_lessons_by_week(){
+        $response = new Response();
+        if( isset($_POST['login_input_teacher'])
+            && isset($_POST['start_date'])
+            && isset($_POST['end_date'])
+        )
+        {
+            try {
+                $data = Lesson::get_all_lessons_by_teacher_by_week($this->link,$_POST['login_input_teacher'],
+                    $_POST['start_date'],$_POST['end_date']);
+                if($data) {
+                    $timetable_Data = $this->generation_timetable($data);
+                    $result=$this->gen_table_Step2($timetable_Data);
 
+                    $response->set('data',$result);
+                    $response->set('result','success');
+
+                }
+            }
+            catch (\Exception $exception)
+            {
+                $response->set('error_code',$exception->getMessage());
+            }
+        }
+        else
+        {
+            //вернуть код ошибки, что не переданы необходимые данные
+        }
+        return $response->makeJson();
+    }
 
 
     private function addlesson($number_lesson,$subject_name,$payment_type,$lesson_type,
