@@ -64,7 +64,7 @@ class Classrooms{
     }
 
     public static function get_num_building_and_class_by_ID(Database $connection, $id_input_classroom){
-        $result = $connection->query('SELECT * FROM get_num_building_and_class_by_ID('.$id_input_classroom  .')');
+        $result = $connection->query('SELECT * FROM "get_num_building_and_class_by_ID"('.$id_input_classroom  .')');
         $buildings_array = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){
