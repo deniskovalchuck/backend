@@ -62,4 +62,25 @@ class Classrooms{
         $arr = pg_fetch_all($result);
         return $arr;
     }
+
+    public static function get_num_building_and_class_by_ID(Database $connection, $id_input_classroom){
+        $result = $connection->query('SELECT * FROM get_num_building_and_class_by_ID('.$id_input_classroom  .')');
+        $buildings_array = array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $buildings_array[$i] = [
+                'num_building' => $row['num_building'],
+                'num_class' => $row['num_class'],
+            ];
+            $i++;
+
+        }
+        return $buildings_array;
+    }
+
+    public static function get_id_classroom(Database $connection, $num_housing, $num_classroom){
+        $result = $connection->query('SELECT * FROM get_id_classroom('.$num_housing.', '.$num_classroom.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
 }

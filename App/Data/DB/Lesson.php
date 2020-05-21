@@ -7,15 +7,15 @@ use Core\Database\Database;
 
 class Lesson{
     /*return integer (-1 - error)*/
-    public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $subject_name){
-        $result = $connection->query('SELECT * FROM get_id_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\', \''.$num_input_lesson.'\', \''.$week_input_day.'\', \''.$week_input_type.'\', \''.$subject_name.'\')');
+    public static function get_id_lesson(Database $connection, $name_input_type_lesson, $name_input_payment_type, $num_input_lesson, $week_input_day, $week_input_type, $subject_name, $id_input_classroom){
+        $result = $connection->query('SELECT * FROM get_id_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\', \''.$num_input_lesson.'\', \''.$week_input_day.'\', \''.$week_input_type.'\', \''.$subject_name.'\', '.$id_input_classroom.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return integer (-1 - error)*/
-    public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_payment_type, $week_input_type, $week_input_day, $num_input_lesson,$subject_name){
-        $result = $connection->query('SELECT * FROM add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\')');
+    public static function add_lesson(Database $connection, $name_input_type_lesson, $name_input_payment_type, $week_input_type, $week_input_day, $num_input_lesson,$subject_name, $num_housing, $num_classroom){
+        $result = $connection->query('SELECT * FROM add_lesson(\''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\', \''.$week_input_type.'\', \''.$week_input_day.'\', \''.$num_input_lesson.'\',\''.$subject_name.'\', '.$num_housing.', '.$num_classroom.')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
@@ -38,6 +38,7 @@ class Lesson{
                 'id_week_day' => $row['id_week_day'],
                 'id_type_lesson' => $row['id_type_lesson'],
                 'id_payment_type' => $row['id_payment_type'],
+                'id_classroom' => $row['id_classroom'],
             ];
             $i++;
 
@@ -55,6 +56,7 @@ class Lesson{
                 'id_week_day' => $row['id_week_day'],
                 'id_type_lesson' => $row['id_type_lesson'],
                 'id_payment_type' => $row['id_payment_type'],
+                'id_classroom' => $row['id_classroom'],
             ];
             $i++;
 
@@ -74,6 +76,7 @@ class Lesson{
                 'id_week_day' => $row['id_week_day'],
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'],
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
+                'id_classroom' => $row['id_classroom'],
             ];
             $i++;
 
@@ -94,6 +97,7 @@ class Lesson{
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
                 'id_subject_on_lesson' => $row['id_subject_on_lesson'],
+                'id_classroom' => $row['id_classroom'],
 
             ];
             $i++;
@@ -113,6 +117,7 @@ class Lesson{
                 'week_day' => $row['week_day'], 
                 'id_groups_on_lesson' => $row['id_groups_on_lesson'], 
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
+                'id_classroom' => $row['id_classroom'],
             ];
             $i++;
         }
