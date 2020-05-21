@@ -174,18 +174,14 @@ class TeacherController {
             && isset($_POST['second_name_input_teacher'])
             && isset($_POST['third_name_input_teacher'])
             && isset($_POST['name_faculty_input_teacher'])
-            && isset($_POST['name_department_input_teacher'])
-            && isset($_POST['name_position_input_teacher'])
-
-        )
+            && isset($_POST['name_department_input_teacher']))
         {
             try {
                 $data = Teacher::get_teacher_info($this->link,$_POST['name_input_teacher']
                     , $_POST['second_name_input_teacher']
                     , $_POST['third_name_input_teacher']
                     , $_POST['name_faculty_input_teacher']
-                    , $_POST['name_department_input_teacher']
-                    , $_POST['name_position_input_teacher']);
+                    , $_POST['name_department_input_teacher']);
                 if(!$data)
                     $response->set('data',array());
                 else
