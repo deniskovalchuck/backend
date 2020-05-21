@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\DB\Groups;
 use App\Data\DB\Lesson;
+use App\Data\DB\Subjects;
 use App\Data\DB\Teacher;
+use App\Data\DB\Type_Lesson;
+use App\Data\DB\Week;
 use Core\helpers\Config;
 use Core\helpers\Response;
 
@@ -143,11 +147,12 @@ class LessonController {
         {
             try {
                 $data = Lesson::get_all_lessons($this->link);
-                if(!$data)
-                    $response->set('data',array());
-                else
-                    $response->set('data',$data);
-                $response->set('result','success');
+                if($data) {
+                    $timetable_Data = $this->generation_timetable($data);
+                    $response->set('data',$timetable_Data);
+                    $response->set('result','success');
+
+                }
             }
             catch (\Exception $exception)
             {
@@ -200,16 +205,16 @@ class LessonController {
 
     public function get_all_lessons_by_teacher(){
         $response = new Response();
-
         if( isset($_POST['login_input_teacher']))
         {
             try {
                 $data = Lesson::get_all_lessons_by_teacher($this->link,$_POST['login_input_teacher']);
-                if(!$data)
-                    $response->set('data',array());
-                else
-                    $response->set('data',$data);
-                $response->set('result','success');
+                if($data) {
+                    $timetable_Data = $this->generation_timetable($data);
+                    $response->set('data',$timetable_Data);
+                    $response->set('result','success');
+
+                }
             }
             catch (\Exception $exception)
             {
@@ -253,4 +258,58 @@ class LessonController {
             return $exception;
         }
     }
+
+
+    private function generation_timetable($timetable_source){
+        $timetable_data = array();
+        $data = Week::get_all_week($this->link);
+        if(!$data)
+            return $timetable_data;
+
+            $days=array();
+            for($i=0;$i<count($data);$i++)
+            {
+                $days[$i]=$data[$i]['input_week_day'];
+            }
+            $days = array_unique($days);
+            //сделали массив с днями недель
+            foreach ($days as $item)
+            {
+                $timetable_data[$item]=array();
+            }
+            //обрабатываем данные
+        foreach ($timetable_source as $item)
+        {
+            if(!array_key_exists($item['num_lesson'],$timetable_data[$item['week_day']]))
+                $timetable_data[$item['week_day']][$item['num_lesson']]=array();
+            //получаем название предмета
+            $subject_data=Subjects::get_teacher_subjects_by_id($this->link,$item['id_subject_on_lesson']);
+            if($subject_data)
+            {
+                //получили название предмета
+                $subject_name=$subject_data[0]['get_teacher_subjects_by_id'];
+                //создали ключи
+                if(!array_key_exists($subject_name,$timetable_data[$item['week_day']][$item['num_lesson']])) {
+                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name] = array();
+                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['groups']=array();
+                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['teachers']=array();
+                }
+                $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
+                if($groupdata)
+                {
+                    foreach ($groupdata as $group)
+                    {
+                        array_push($timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['groups'],
+                        $group['abr_group'].$group['year_entry_group'].$group['subgroup']);
+                    }
+                }
+                else
+                    return array();
+
+            }
+        }
+
+        return $timetable_data;
+    }
+
 }
