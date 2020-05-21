@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\DB\Groups;
 use App\Data\DB\Lesson;
+use App\Data\DB\Subjects;
+use App\Data\DB\Teacher;
+use App\Data\DB\Type_Lesson;
+use App\Data\DB\Week;
 use Core\helpers\Config;
 use Core\helpers\Response;
 
@@ -32,9 +37,7 @@ class LessonController {
                     , $_POST['name_input_payment_type']
                     , $_POST['num_input_lesson']
                     , $_POST['week_input_day']
-                    , $_POST['week_input_type']
-                    , $_POST['start_input_date']
-                    , $_POST['end_input_date']);
+                    , $_POST['week_input_type']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -56,32 +59,36 @@ class LessonController {
     /*return integer (-1 - error)*/
     public function add_lesson(){
         $response = new Response();
-        if( isset($_POST['name_input_type_lesson'])
-        && isset($_POST['name_input_education_type'])
-            && isset($_POST['name_input_payment_type'])
-            && isset($_POST['week_input_type'])
-            && isset($_POST['week_input_day'])
-            && isset($_POST['num_input_lesson'])
-            && isset($_POST['subject_name'])
+        if(
+               isset($_POST['number_lesson'])//Введите номер пары
+            && isset($_POST['subject_name'])//Выберите предмет
+            && isset($_POST['payment_type'])//Выберите тип оплаты
+            && isset($_POST['lesson_type'])//Выберите тип предмета
+            && isset($_POST['lesson_type_name'])//Выберите название типа предмета
+            && isset($_POST['day'])//Выберите день недели
+            && isset($_POST['top_or_bottom_week'])//Выберите верхнюю или нижнюю неделю
+            && isset($_POST['selected_groups'])//список групп
+            && isset($_POST['selected_teachers'])//список преподователей
         )
         {
-            try {
-                $data = Lesson::add_lesson($this->link,$_POST['name_input_type_lesson']
-                    ,$_POST['name_input_education_type']
-                    ,$_POST['name_input_payment_type']
-                    ,$_POST['week_input_type']
-                    ,$_POST['week_input_day']
-                    ,$_POST['num_input_lesson'],$_POST['subject_name']);
-                if(!$data)
-                    $response->set('data',array());
-                else
-                    $response->set('data',$data);
-                $response->set('result','success');
-            }
-            catch (\Exception $exception)
+            if($_POST['top_or_bottom_week']=="ALL")
             {
-                $response->set('error_code',$exception->getMessage());
+                $this->addlesson($_POST['number_lesson'],$_POST['subject_name'],
+                    $_POST['payment_type'],$_POST['lesson_type'],
+                    $_POST['lesson_type_name'],$_POST['day'],'В',
+                    $_POST['selected_groups'],$_POST['selected_teachers']);
+                $this->addlesson($_POST['number_lesson'],$_POST['subject_name'],
+                    $_POST['payment_type'],$_POST['lesson_type'],
+                    $_POST['lesson_type_name'],$_POST['day'],'Н',
+                    $_POST['selected_groups'],$_POST['selected_teachers']);
+            }else
+            {
+                $this->addlesson($_POST['number_lesson'],$_POST['subject_name'],
+                    $_POST['payment_type'],$_POST['lesson_type'],
+                    $_POST['lesson_type_name'],$_POST['day'],$_POST['top_or_bottom_week'],
+                    $_POST['selected_groups'],$_POST['selected_teachers']);
             }
+            $response->set('result','success');
         }
         else
         {
@@ -140,11 +147,12 @@ class LessonController {
         {
             try {
                 $data = Lesson::get_all_lessons($this->link);
-                if(!$data)
-                    $response->set('data',array());
-                else
-                    $response->set('data',$data);
-                $response->set('result','success');
+                if($data) {
+                    $timetable_Data = $this->generation_timetable($data);
+                    $response->set('data',$timetable_Data);
+                    $response->set('result','success');
+
+                }
             }
             catch (\Exception $exception)
             {
@@ -197,16 +205,16 @@ class LessonController {
 
     public function get_all_lessons_by_teacher(){
         $response = new Response();
-
         if( isset($_POST['login_input_teacher']))
         {
             try {
                 $data = Lesson::get_all_lessons_by_teacher($this->link,$_POST['login_input_teacher']);
-                if(!$data)
-                    $response->set('data',array());
-                else
-                    $response->set('data',$data);
-                $response->set('result','success');
+                if($data) {
+                    $timetable_Data = $this->generation_timetable($data);
+                    $response->set('data',$timetable_Data);
+                    $response->set('result','success');
+
+                }
             }
             catch (\Exception $exception)
             {
@@ -219,4 +227,89 @@ class LessonController {
         }
         return $response->makeJson();
     }
+
+
+
+    private function addlesson($number_lesson,$subject_name,$payment_type,$lesson_type,
+                               $lesson_type_name,$day,$top_or_bottom_week,$selected_groups,$selected_teachers){
+        try {
+            $data = Lesson::add_lesson($this->link,$lesson_type_name,$payment_type,$day,$top_or_bottom_week,
+            $number_lesson,$subject_name);
+            if($data!=null)
+            {
+                foreach ($selected_teachers as $item)
+                {
+                    $datateacher = Teacher::get_teacher_login($this->link,$item['step3_selected_teachers'][0],$item['step3_selected_teachers'][1],$item['step3_selected_teachers'][2],
+                        $item['step3_selected_faculty'],$item['step3_selected_department']);
+
+                    Lesson::add_teachers_on_lesson($this->link,$datateacher[0]['get_teacher_login'],$data[0]['add_lesson']);
+                }
+                foreach ($selected_groups as $item)
+                {
+                    Lesson::add_groups_on_lesson($this->link,$data[0]['add_lesson'],$item['step2_selected_groups'][0],$item['step2_selected_groups'][1],
+                        $item['step2_selected_faculty'],
+                    $item['step2_selected_department'],$item['step2_selected_special'],$item['step2_selected_groups'][2]);
+                }
+            }
+        }
+        catch (\Exception $exception)
+        {
+            var_dump($exception->getMessage());
+            return $exception;
+        }
+    }
+
+
+    private function generation_timetable($timetable_source){
+        $timetable_data = array();
+        $data = Week::get_all_week($this->link);
+        if(!$data)
+            return $timetable_data;
+
+            $days=array();
+            for($i=0;$i<count($data);$i++)
+            {
+                $days[$i]=$data[$i]['input_week_day'];
+            }
+            $days = array_unique($days);
+            //сделали массив с днями недель
+            foreach ($days as $item)
+            {
+                $timetable_data[$item]=array();
+            }
+            //обрабатываем данные
+        foreach ($timetable_source as $item)
+        {
+            if(!array_key_exists($item['num_lesson'],$timetable_data[$item['week_day']]))
+                $timetable_data[$item['week_day']][$item['num_lesson']]=array();
+            //получаем название предмета
+            $subject_data=Subjects::get_teacher_subjects_by_id($this->link,$item['id_subject_on_lesson']);
+            if($subject_data)
+            {
+                //получили название предмета
+                $subject_name=$subject_data[0]['get_teacher_subjects_by_id'];
+                //создали ключи
+                if(!array_key_exists($subject_name,$timetable_data[$item['week_day']][$item['num_lesson']])) {
+                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name] = array();
+                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['groups']=array();
+                    $timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['teachers']=array();
+                }
+                $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
+                if($groupdata)
+                {
+                    foreach ($groupdata as $group)
+                    {
+                        array_push($timetable_data[$item['week_day']][$item['num_lesson']][$subject_name]['groups'],
+                        $group['abr_group'].$group['year_entry_group'].$group['subgroup']);
+                    }
+                }
+                else
+                    return array();
+
+            }
+        }
+
+        return $timetable_data;
+    }
+
 }

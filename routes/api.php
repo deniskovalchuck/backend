@@ -87,7 +87,13 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/teachers/delete_sub_for_teacher', "\App\Http\Controllers\TeacherController@delete_sub_for_teacher");
     $router->postController('/teachers/get_all_teacher_positions', "\App\Http\Controllers\TeacherController@get_all_teacher_positions");
 
+    /*week*/
+    $router->postController('/weeks/get_all_week', "\App\Http\Controllers\WeeksController@get_all_week");
 
-
+    /*TypeOfActivityController*/
+    $router->postController('/typeofactivity/get', "\App\Http\Controllers\TypeOfActivityController@get_all");
+    $router->postController('/typeofactivity/delete', "\App\Http\Controllers\TypeOfActivityController@delete");
+    $router->postController('/typeofactivity/add', "\App\Http\Controllers\TypeOfActivityController@add");
+    $router->postController('/typeofactivity/get_all_by_type', "\App\Http\Controllers\TypeOfActivityController@get_all_by_type");
 
 });

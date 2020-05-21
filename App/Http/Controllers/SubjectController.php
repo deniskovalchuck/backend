@@ -90,7 +90,16 @@ class SubjectController {
                 if(!$data)
                     $response->set('data',array());
                 else
-                    $response->set('data',$data);
+                {
+                    $new_data=array();
+                    for($i=0;$i<count($data);$i++)
+                    {
+                        $new_data[$i]=array();
+                        $new_data[$i]['teacher_subject']=Subjects::get_teacher_subjects_by_id($this->link,$data[$i]['teacher_subject'])[0]['get_teacher_subjects_by_id'];
+                    }
+                    $response->set('data',$new_data);
+
+                }
                 $response->set('result','success');
             }
             catch (\Exception $exception)
