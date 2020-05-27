@@ -19,7 +19,7 @@ class Substitution{
         return $arr;
     }
 
-    public static function get_all_sub_by_teacher(Database $connection, $login_input_teacher){
+        public static function get_all_sub_by_teacher(Database $connection, $login_input_teacher){
         $result = $connection->query('SELECT * FROM get_all_sub_by_teacher('.$login_input_teacher.')');
         $sub_info = array();
         $i=0;
