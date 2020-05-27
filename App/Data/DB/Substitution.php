@@ -4,7 +4,10 @@ namespace App\Data\DB;
 use Core\Database\Database;
 
 class Substitution{
-    public static function create_sub_for_teacher(Database $connection, $login_input_replaceable_teacher, $login_input_replacing_teacher, $date_from_sub_teacher, $date_to_sub_teacher, $id_input_lesson, $num_input_building, $num_input_class, $num_input_lesson){
+    public static function create_sub_for_teacher(Database $connection, $login_input_replaceable_teacher,
+                                                  $login_input_replacing_teacher, $date_from_sub_teacher,
+                                                  $date_to_sub_teacher, $id_input_lesson, $num_input_building,
+                                                  $num_input_class, $num_input_lesson){
         $result = $connection->query('SELECT * FROM create_sub_for_teacher('.$login_input_replaceable_teacher.', '.$login_input_replacing_teacher.', '.$date_from_sub_teacher.'::date, '.$date_to_sub_teacher.'::date, '.$id_input_lesson.', '.$num_input_building.', '.$num_input_class.', '.$num_input_lesson.')');
         $arr = pg_fetch_all($result);
         return $arr;

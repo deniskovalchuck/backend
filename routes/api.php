@@ -97,4 +97,10 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/typeofactivity/add', "\App\Http\Controllers\TypeOfActivityController@add");
     $router->postController('/typeofactivity/get_all_by_type', "\App\Http\Controllers\TypeOfActivityController@get_all_by_type");
 
+
+    $router->postController('/holydays/getall', "\App\Http\Controllers\HolydaysController@get_all");
+    $router->postController('/holydays/delete', "\App\Http\Controllers\HolydaysController@delete");
+    $router->postController('/holydays/add', "\App\Http\Controllers\HolydaysController@add");
+
+
 });
