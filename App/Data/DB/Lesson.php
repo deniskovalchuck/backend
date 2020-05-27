@@ -90,7 +90,7 @@ class Lesson{
         $i=0;
         while($row = pg_fetch_assoc($result)){
             $teacher_lessons_array[$i]  = [
-                'id_type_lesson' => $row['id_type_lesson'], 
+                'id_type_lesson' => $row['id_type_lesson'],
                 'id_payment_type_on_lesson' => $row['id_payment_type_on_lesson'], 
                 'num_lesson' => $row['num_lesson'], 
                 'week_day' => $row['week_day'],
@@ -111,6 +111,7 @@ class Lesson{
         $i=0;
         while($row = pg_fetch_assoc($result)){
             $teacher_lessons_array[$i]  = [
+                'id_lesson' => $row['id_lesson'],
                 'id_type_lesson' => $row['id_type_lesson'], 
                 'id_payment_type_on_lesson' => $row['id_payment_type_on_lesson'], 
                 'num_lesson' => $row['num_lesson'], 

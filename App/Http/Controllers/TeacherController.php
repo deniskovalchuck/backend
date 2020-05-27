@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\DB\Positions;
+use App\Data\DB\Substitution;
 use App\Data\DB\Teacher;
 use Core\helpers\Config;
 use Core\helpers\Response;
@@ -174,18 +175,14 @@ class TeacherController {
             && isset($_POST['second_name_input_teacher'])
             && isset($_POST['third_name_input_teacher'])
             && isset($_POST['name_faculty_input_teacher'])
-            && isset($_POST['name_department_input_teacher'])
-            && isset($_POST['name_position_input_teacher'])
-
-        )
+            && isset($_POST['name_department_input_teacher']))
         {
             try {
                 $data = Teacher::get_teacher_info($this->link,$_POST['name_input_teacher']
                     , $_POST['second_name_input_teacher']
                     , $_POST['third_name_input_teacher']
                     , $_POST['name_faculty_input_teacher']
-                    , $_POST['name_department_input_teacher']
-                    , $_POST['name_position_input_teacher']);
+                    , $_POST['name_department_input_teacher']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -240,15 +237,27 @@ class TeacherController {
     //переносы
     public  function create_sub_for_teacher( ){
         $response = new Response();
-        if(isset($_POST['login_replaceable_teacher'])
-            && isset($_POST['login_replacing_teacher'])
-            && isset($_POST['date_sub_teacher'])
+        if( isset($_POST['login_input_replacing_teacher'])
+            && isset($_POST['date_from_sub_teacher'])
+            && isset($_POST['date_to_sub_teacher'])
+            && isset($_POST['id_input_lesson'])
+            && isset($_POST['num_input_building'])
+            && isset($_POST['num_input_class'])
+            && isset($_POST['num_input_lesson'])
         )
         {
             try {
-                $data = Teacher::create_sub_for_teacher($this->link,$_POST['login_replaceable_teacher']
-                    , $_POST['login_replacing_teacher']
-                    , $_POST['date_sub_teacher']);
+                $login_input_replaceable_teacher=Config::get('app.user')['login_teacher'];
+
+
+                $data = Substitution::create_sub_for_teacher($this->link,$login_input_replaceable_teacher
+                    , $_POST['login_input_replacing_teacher']
+                    , $_POST['date_from_sub_teacher']
+                    , $_POST['date_to_sub_teacher']
+                    , $_POST['id_input_lesson']
+                    , $_POST['num_input_building']
+                    , $_POST['num_input_class']
+                    , $_POST['num_input_lesson']);
                 if(!$data)
                     $response->set('data',array());
                 else

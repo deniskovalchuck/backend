@@ -4,14 +4,15 @@ namespace App\Data\DB;
 use Core\Database\Database;
 
 class Holidays{
-    public static function add_holiday(Database $connection, $name_input_holiday, $date_input_holiday_from, $date_input_holiday_to){
-        $result = $connection->query('SELECT * FROM add_holiday('.$name_input_holiday.', '.$date_input_holiday_from.', '.$date_input_holiday_to.')');
+    public static function add_holiday(Database $connection, $name_input_holiday,
+                                       $date_input_holiday_from, $date_input_holiday_to){
+        $result = $connection->query('SELECT * FROM add_holiday(\''.$name_input_holiday.'\', \''.$date_input_holiday_from.'\', \''.$date_input_holiday_to.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     public static function delete_holiday(Database $connection, $id_input_holidays){
-        $result = $connection->query('SELECT * FROM delete_holiday('.$id_input_holidays.')');
+        $result = $connection->query('SELECT * FROM delete_holiday(\''.$id_input_holidays.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }

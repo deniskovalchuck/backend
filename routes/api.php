@@ -48,6 +48,7 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/lessons/get_all_lessons', "\App\Http\Controllers\LessonController@get_all_lessons");
     $router->postController('/lessons/get_all_lessons_by_group', "\App\Http\Controllers\LessonController@get_all_lessons_by_group");
     $router->postController('/lessons/get_all_lessons_by_teacher', "\App\Http\Controllers\LessonController@get_all_lessons_by_teacher");
+    $router->postController('/lessons/get_all_lessons_by_week', "\App\Http\Controllers\LessonController@get_all_lessons_by_week");
 
     /*типы оплат*/
     $router->postController('/payment/add_payment_type', "\App\Http\Controllers\PaymentController@add_payment_type");
@@ -95,5 +96,11 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/typeofactivity/delete', "\App\Http\Controllers\TypeOfActivityController@delete");
     $router->postController('/typeofactivity/add', "\App\Http\Controllers\TypeOfActivityController@add");
     $router->postController('/typeofactivity/get_all_by_type', "\App\Http\Controllers\TypeOfActivityController@get_all_by_type");
+
+
+    $router->postController('/holydays/getall', "\App\Http\Controllers\HolydaysController@get_all");
+    $router->postController('/holydays/delete', "\App\Http\Controllers\HolydaysController@delete");
+    $router->postController('/holydays/add', "\App\Http\Controllers\HolydaysController@add");
+
 
 });
