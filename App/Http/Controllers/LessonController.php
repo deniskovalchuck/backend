@@ -213,8 +213,10 @@ class LessonController {
             try {
                 $data = Lesson::get_all_lessons_by_teacher($this->link,$_POST['login_input_teacher']);
                 if($data) {
+                    //генерируем расписание
                     $timetable_Data = $this->generation_timetable($data);
-                   $result=$this->gen_table_Step2($timetable_Data);
+                   //перегоняем в удобный вид для клиента
+                    $result=$this->gen_table_Step2($timetable_Data);
 
                     $response->set('data',$result);
                     $response->set('result','success');
@@ -293,7 +295,7 @@ class LessonController {
         }
     }
 
-
+    //массив пар
     private function generation_timetable($timetable_source){
         $timetable_data = array();
         $data = Week::get_all_week($this->link);
@@ -314,6 +316,7 @@ class LessonController {
             //обрабатываем данные
         //максимальная по номеру пара
         $timetable_data['max_num_lesson']=1;
+            //обрабатываем пары
         foreach ($timetable_source as $item)
         {
             if($item['num_lesson']> $timetable_data['max_num_lesson'])
@@ -326,6 +329,7 @@ class LessonController {
             {
                 $subject_name=$subject_data[0]['get_teacher_subjects_by_id'];
                 $found =false;
+                //обрабатываем предметв
                 for($k=0; $k<count($timetable_data[$item['week_day']][$item['num_lesson']]);$k++)
                 {
                     if($timetable_data[$item['week_day']][$item['num_lesson']][$k]['name']==$subject_name
@@ -343,6 +347,7 @@ class LessonController {
                             $d = Classrooms::get_num_building_and_class_by_ID($this->link,$item['id_classroom']);
                             if($d)
                                 $timetable_data[$item['week_day']][$item['num_lesson']][$k]['classroom']=$d;
+
                         }
                         $found=true;
                         break;
@@ -355,6 +360,8 @@ class LessonController {
                     $dat['classroom']=array();
                     $dat['week_day_type']=$item['week_day_type'];
                     $dat['groups']=array();
+                    $dat['id_lesson']=$item['id_lesson'];
+
                     $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
                     if($groupdata) {
                         foreach ($groupdata as $group) {
