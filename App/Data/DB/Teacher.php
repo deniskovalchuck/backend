@@ -162,8 +162,10 @@ class Teacher{
         return $teacher_positions;
     }
 
-    public static function generation_report(Database $connection, $login_input_teacher, $start_day_in_month, $name_input_type_lesson, $name_input_payment_type){
-        $result = $connection->query('SELECT * FROM generation_report('.$login_input_teacher.', '.$start_day_in_month.', '.$name_input_type_lesson.', '.$name_input_payment_type.')');
+    public static function generation_report(Database $connection, $login_input_teacher,
+                                             $start_day_in_month, $name_input_type_lesson,
+                                             $name_input_payment_type){
+        $result = $connection->query('SELECT * FROM generation_report(\''.$login_input_teacher.'\', \''.$start_day_in_month.'\', \''.$name_input_type_lesson.'\', \''.$name_input_payment_type.'\')');
         $teacher_report = array();
         $i=0;
         while($row = pg_fetch_assoc($result)){
