@@ -17,21 +17,36 @@ class ReportController {
          $this->link = Config::get('app.database.connection');
      }
 
+   private static function cmp($a, $b)
+    {
+        if ($a["date"] == $b["date"]) {
+            return 0;
+        }
+        return (strtotime($a["date"]) < strtotime($b["date"])) ? -1 : 1;
+    }
     public  function create_report(){
         $response = new Response();
-        if(isset($_POST['login_input_teacher']) && isset($_POST['start_day_in_month'])
-            && isset($_POST['name_input_payment_type']) )
+        if(isset($_POST['payment_type']) && isset($_POST['step3_selected_faculty'])
+            && isset($_POST['step3_selected_department'])&& isset($_POST['step3_selected_teachers'])
+            && isset($_POST['monts']) )
         {
             try {
+                $name=explode('#',$_POST['step3_selected_teachers']);
                 $data = array();
                 $type_lesson = Type_Lesson::get_all_type_lesson($this->link);
                 $k=0;
+                $teacher = Teacher::get_teacher_login($this->link,$name[0]
+                    , $name[1]
+                    , $name[2]
+                    , $_POST['step3_selected_faculty']
+                    , $_POST['step3_selected_department']);
+
                 for($i=0;$i<count($type_lesson);$i++)
                 {
 
-                    $report=Teacher::generation_report($this->link,$_POST['login_input_teacher'],
-                        $_POST['start_day_in_month'],$type_lesson[$i]['type_lessons'],
-                        $_POST['name_input_payment_type']);
+                    $report=Teacher::generation_report($this->link,$teacher[0]['get_teacher_login'],
+                        $_POST['monts'],$type_lesson[$i]['type_lessons'],
+                        $_POST['payment_type']);
                     for($j=0;$j<count($report);$j++)
                     {
                         $data[$k]=array();
@@ -42,9 +57,11 @@ class ReportController {
                         $data[$k]['group']=$group[0]['abr_group'].'-'.$group[0]['year_entry_group'].$group[0]['subgroup'];
                         $k++;
                     }
-
+                    var_dump($report);
                 }
-                usort($data, "cmp");
+                $response->set('data2',$data);
+
+                usort($data, array($this,'cmp'));
                 $response->set('data',$data);
                 $response->set('result','success');
 
@@ -62,12 +79,5 @@ class ReportController {
 
     }
 
-    private function cmp($a, $b)
-    {
-        if ($a["date"] == $b["date"]) {
-            return 0;
-        }
-        return (strtotime($a["date"]) < strtotime($b["date"])) ? -1 : 1;
-    }
 
 }

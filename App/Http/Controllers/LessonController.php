@@ -230,7 +230,7 @@ class LessonController {
         }
         else
         {
-            //вернуть код ошибки, что не переданы необходимые данные
+            $response->set('error_code',$_POST);
         }
         return $response->makeJson();
     }
