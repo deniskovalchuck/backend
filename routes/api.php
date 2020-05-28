@@ -86,6 +86,8 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/teachers/get_teacher_login', "\App\Http\Controllers\TeacherController@get_teacher_login");
     $router->postController('/teachers/create_sub_for_teacher', "\App\Http\Controllers\TeacherController@create_sub_for_teacher");
     $router->postController('/teachers/delete_sub_for_teacher', "\App\Http\Controllers\TeacherController@delete_sub_for_teacher");
+    $router->postController('/teachers/get_all_sub_for_teacher', "\App\Http\Controllers\TeacherController@get_all_sub_for_teacher");
+
     $router->postController('/teachers/get_all_teacher_positions', "\App\Http\Controllers\TeacherController@get_all_teacher_positions");
 
     /*week*/
