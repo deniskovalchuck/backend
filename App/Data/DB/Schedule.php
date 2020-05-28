@@ -11,7 +11,7 @@ class Schedule{
     }
 
     public static function delete_schedule(Database $connection, $id_input_student_group, $start_input_education, $end_input_education, $start_input_session, $end_input_session){
-        $result = $connection->query('SELECT * FROM delete_schedule(.$id_input_student_group.', \''.$start_input_education.'\', \''.$end_input_education.'\', \''.$start_input_session.'\', \''.$end_input_session.'\')');
+        $result = $connection->query('SELECT * FROM delete_schedule('.$id_input_student_group.', \''.$start_input_education.'\', \''.$end_input_education.'\', \''.$start_input_session.'\', \''.$end_input_session.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
