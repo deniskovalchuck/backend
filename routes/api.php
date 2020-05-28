@@ -104,5 +104,6 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/holydays/delete', "\App\Http\Controllers\HolydaysController@delete");
     $router->postController('/holydays/add', "\App\Http\Controllers\HolydaysController@add");
 
+    $router->postController('/report/get', "\App\Http\Controllers\ReportController@create_report");
 
 });

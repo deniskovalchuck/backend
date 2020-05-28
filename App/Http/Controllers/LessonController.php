@@ -230,7 +230,7 @@ class LessonController {
         }
         else
         {
-            //вернуть код ошибки, что не переданы необходимые данные
+            $response->set('error_code',$_POST);
         }
         return $response->makeJson();
     }
@@ -401,7 +401,7 @@ class LessonController {
                 {
                     $result[$i-1]['monday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_monday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_monday']==2)
+                    if($result[$i-1]['count_monday']>1)
                     {
                         if($result[$i-1]['monday'][0]['week_day_type']=='H')
                         {
@@ -424,7 +424,7 @@ class LessonController {
                 {
                     $result[$i-1]['Tuesday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Tuesday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_Tuesday']==2)
+                    if($result[$i-1]['count_Tuesday']>1)
                     {
                         if($result[$i-1]['Tuesday'][0]['week_day_type']=='H')
                         {
@@ -433,7 +433,7 @@ class LessonController {
                             $result[$i-1]['Tuesday'][1]['week_day_type']=$tmp;
                         }
                     }
-                    date_modify($date, '2 days');
+                    date_modify($date, '1 days');
                     $result[$i-1]['Tuesday_date']=date_format($date, 'Y/m/d');
                 }
                 else
@@ -446,7 +446,7 @@ class LessonController {
                 {
                     $result[$i-1]['Wednesday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Wednesday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_Wednesday']==2)
+                    if($result[$i-1]['count_Wednesday']>1)
                     {
                         if($result[$i-1]['Wednesday'][0]['week_day_type']=='H')
                         {
@@ -455,7 +455,7 @@ class LessonController {
                             $result[$i-1]['Wednesday'][1]['week_day_type']=$tmp;
                         }
                     }
-                    date_modify($date, '3 days');
+                    date_modify($date, '2 days');
                     $result[$i-1]['Wednesday_date']=date_format($date, 'Y/m/d');
                 }
                 else
@@ -469,7 +469,7 @@ class LessonController {
                 {
                     $result[$i-1]['Thursday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Thursday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_Thursday']==2)
+                    if($result[$i-1]['count_Thursday']>1)
                     {
                         if($result[$i-1]['Thursday'][0]['week_day_type']=='H')
                         {
@@ -492,7 +492,7 @@ class LessonController {
                 {
                     $result[$i-1]['Friday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Friday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_Friday']==2)
+                    if($result[$i-1]['count_Friday']>1)
                     {
                         if($result[$i-1]['Friday'][0]['week_day_type']=='H')
                         {
@@ -516,7 +516,7 @@ class LessonController {
                 {
                     $result[$i-1]['Saturday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Saturday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_Saturday']==2)
+                    if($result[$i-1]['count_Saturday']>1)
                     {
                         if($result[$i-1]['Saturday'][0]['week_day_type']=='H')
                         {
@@ -538,7 +538,7 @@ class LessonController {
                 {
                     $result[$i-1]['Sunday']=$timetable_Data[$key][$i];
                     $result[$i-1]['count_Sunday']=count($timetable_Data[$key][$i]);
-                    if($result[$i-1]['count_Sunday']==2)
+                    if($result[$i-1]['count_Sunday']>1)
                     {
                         if($result[$i-1]['Sunday'][0]['week_day_type']=='H')
                         {
