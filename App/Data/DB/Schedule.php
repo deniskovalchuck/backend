@@ -5,7 +5,7 @@ use Core\Database\Database;
 
 class Schedule{
     public static function add_schedule(Database $connection, $id_input_student_group, $start_input_education, $end_input_education, $start_input_session, $end_input_session){
-        $result = $connection->query('SELECT * FROM add_schedule(.$id_input_student_group.', \''.$start_input_education.'\', \''.$end_input_education.'\', \''.$start_input_session.'\', \''.$end_input_session.'\')');
+        $result = $connection->query('SELECT * FROM add_schedule('.$id_input_student_group.', \''.$start_input_education.'\', \''.$end_input_education.'\', \''.$start_input_session.'\', \''.$end_input_session.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
