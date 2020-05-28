@@ -246,12 +246,15 @@ class LessonController {
                     $_POST['start_date'],$_POST['end_date']);
                 if($data) {
                     $timetable_Data = $this->generation_timetable($data);
-                    $result=$this->gen_table_Step2($timetable_Data);
+                    $result=$this->gen_table_Step2($timetable_Data, $_POST['start_date']);
 
                     $response->set('data',$result);
                     $response->set('result','success');
 
                 }
+                else
+                    $response->set('data',$data);
+
             }
             catch (\Exception $exception)
             {
@@ -260,6 +263,7 @@ class LessonController {
         }
         else
         {
+            $response->set('error_code',$_POST);
             //вернуть код ошибки, что не переданы необходимые данные
         }
         return $response->makeJson();
@@ -380,15 +384,17 @@ class LessonController {
 
         return $timetable_data;
     }
-    private function gen_table_Step2($timetable_Data)
+    private function gen_table_Step2($timetable_Data,$start_day)
     {
         $result=array();
-
+        $start_day = explode('/',$start_day);
+        $date = date_create($start_day[0].'-'.$start_day[1].'-'.$start_day[2]);
         if($timetable_Data!=null)
             //по строкам
             for($i=1;$i<$timetable_Data['max_num_lesson']+1;$i++)
             {
                 $result[$i-1]=array();
+                $date = date_create($start_day[0].'-'.$start_day[1].'-'.$start_day[2]);
                 //по столбцам
                 $key="Понедельник";
                 if(array_key_exists($i,$timetable_Data[$key]))
@@ -404,6 +410,9 @@ class LessonController {
                             $result[$i-1]['monday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    //date_modify($date, '1 day');
+                    $result[$i-1]['monday_date']=date_format($date, 'Y/m/d');;
+
                 }
                 else
                 {
@@ -424,6 +433,8 @@ class LessonController {
                             $result[$i-1]['Tuesday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    date_modify($date, '2 days');
+                    $result[$i-1]['Tuesday_date']=date_format($date, 'Y/m/d');
                 }
                 else
                 {
@@ -444,6 +455,8 @@ class LessonController {
                             $result[$i-1]['Wednesday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    date_modify($date, '3 days');
+                    $result[$i-1]['Wednesday_date']=date_format($date, 'Y/m/d');
                 }
                 else
                 {
@@ -465,6 +478,8 @@ class LessonController {
                             $result[$i-1]['Thursday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    date_modify($date, '3 days');
+                    $result[$i-1]['Thursday_date']=date_format($date, 'Y/m/d');
                 }
                 else
                 {
@@ -486,6 +501,8 @@ class LessonController {
                             $result[$i-1]['Friday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    date_modify($date, '4 days');
+                    $result[$i-1]['Friday_date']=date_format($date, 'Y/m/d');
                 }
                 else
                 {
@@ -508,6 +525,8 @@ class LessonController {
                             $result[$i-1]['Saturday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    date_modify($date, '5 days');
+                    $result[$i-1]['Saturday_date']=date_format($date, 'Y/m/d');
                 }
                 else
                 {
@@ -528,6 +547,8 @@ class LessonController {
                             $result[$i-1]['Sunday'][1]['week_day_type']=$tmp;
                         }
                     }
+                    date_modify($date, '6 days');
+                    $result[$i-1]['Sunday_date']=date_format($date, 'Y/m/d');
                 }
                 else
                 {
