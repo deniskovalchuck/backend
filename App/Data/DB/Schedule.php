@@ -33,6 +33,12 @@ class Schedule{
         return $schedule_array;
     }
 
+    public static function get_id_training_schedule(Database $connection, $start_input_education, $end_input_education, $start_input_session, $end_input_session, $id_input_student_group){
+        $result = $connection->query('SELECT * FROM get_id_training_schedule('.$start_input_education.', \''.$end_input_education.'\', \''.$start_input_session.'\', \''.$end_input_session.'\', \''.$id_input_student_group.'\')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
+
     public static function get_schedule_for_group(Database $connection, $id_input_student_group){
         $result = $connection->query('SELECT * FROM get_schedule_for_group('.$id_input_student_group.')');
         $schedule_array = array();
