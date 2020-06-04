@@ -216,7 +216,7 @@ class LessonController {
                     //генерируем расписание
                     $timetable_Data = $this->generation_timetable($data);
                    //перегоняем в удобный вид для клиента
-                    $result=$this->gen_table_Step2($timetable_Data);
+                    $result=$this->gen_table_Step2($timetable_Data,"01/01/2020");
 
                     $response->set('data',$result);
                     $response->set('result','success');
@@ -329,6 +329,7 @@ class LessonController {
                 $timetable_data[$item['week_day']][$item['num_lesson']]=array();
             //получаем название предмета
             $subject_data=Subjects::get_teacher_subjects_by_id($this->link,$item['id_subject_on_lesson']);
+            $type_lesson = Type_Lesson::get_type_lesson_by_id($this->link,$item['id_type_lesson']);
             if($subject_data)
             {
                 $subject_name=$subject_data[0]['get_teacher_subjects_by_id'];
@@ -361,6 +362,7 @@ class LessonController {
                 {
                     $dat=array();
                     $dat['name']=$subject_name;
+                    $dat['type_lesson']=$type_lesson[0]['name_type_lesson'];
                     $dat['classroom']=array();
                     $dat['week_day_type']=$item['week_day_type'];
                     $dat['groups']=array();

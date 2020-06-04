@@ -6,6 +6,7 @@ use App\Data\DB\Groups;
 use Core\helpers\Config;
 use Core\helpers\Converter;
 use Core\helpers\Response;
+use App\Data\DB\Schedule;
 
 
 class GroupController{
@@ -109,6 +110,73 @@ class GroupController{
         ) {
             try {
                 $data = Groups::get_all_groups($this->link,$_POST['faculty_name'],$_POST['department_name'],$_POST['specialization_name']);
+                if (!$data)
+                    $response->set('data', array());
+                else
+                    $response->set('data', $data);
+                $response->set('result', 'success');
+            } catch (\Exception $exception) {
+                $response->set('error_code', $exception->getMessage());
+            }
+        }
+        else
+        {
+
+        }
+        return $response->makeJson();
+    }
+    public function get_all_schedule()
+    {
+        $response = new Response();
+        if(isset($_POST['id'])) {
+            try {
+                $data = Schedule::get_schedule_for_group($this->link,$_POST['id']);
+                if (!$data)
+                    $response->set('data', array());
+                else
+                    $response->set('data', $data);
+                $response->set('result', 'success');
+            } catch (\Exception $exception) {
+                $response->set('error_code', $exception->getMessage());
+            }
+        }
+        else
+        {
+
+        }
+        return $response->makeJson();
+    }
+    public function add_schedule()
+    {
+        $response = new Response();
+        if(isset($_POST['id']) && isset($_POST['start_ed']) && isset($_POST['end_ed']) && isset($_POST['start_session']) &&
+            isset($_POST['end_session'])) {
+            try {
+                $data = Schedule::add_schedule($this->link,$_POST['id'],$_POST['start_ed'],$_POST['end_ed'],
+                    $_POST['start_session'],$_POST['end_session']);
+                if (!$data)
+                    $response->set('data', array());
+                else
+                    $response->set('data', $data);
+                $response->set('result', 'success');
+            } catch (\Exception $exception) {
+                $response->set('error_code', $exception->getMessage());
+            }
+        }
+        else
+        {
+
+        }
+        return $response->makeJson();
+    }
+    public function delete_schedule()
+    {
+        $response = new Response();
+        if(isset($_POST['id']) && isset($_POST['start_ed']) && isset($_POST['end_ed']) && isset($_POST['start_session']) &&
+            isset($_POST['end_session'])) {
+            try {
+                $data = Schedule::delete_schedule($this->link,$_POST['id'],$_POST['start_ed'],$_POST['end_ed'],
+                    $_POST['start_session'],$_POST['end_session']);
                 if (!$data)
                     $response->set('data', array());
                 else
