@@ -9,6 +9,7 @@ use App\Data\DB\Type_Lesson;
 use Core\helpers\Config;
 use Core\helpers\Response;
 use Core\PhpSpreadsheet\Spreadsheet;
+use Core\PhpSpreadsheet\Style\Border;
 use Core\PhpSpreadsheet\Writer\Xlsx;
 
 class ReportController {
@@ -75,13 +76,12 @@ class ReportController {
 
                             }
                         }
+                        if(trim($datum['date'])===trim($result_data[$i]['date']))
                         $result_data[$i]['group'][$datum['group']][$datum['type']]+=$datum['count_hour'];
 
                     }
 
                 }
-
-
                 //список месяцев с названиями для замены
                 $_monthsList = array(
                     ".01." => "Январь",
@@ -100,8 +100,6 @@ class ReportController {
                 $_mD = date(".m.", strtotime($_POST['monts'])); //для замены
                 $currentDate = $_monthsList[$_mD];
                 usort($result_data, array($this,'cmp'));
-                ///готовые данные в массиве
-                $response->set('data2',$result_data);
                 $chars = range('A', 'Z');
                 $start_index=2;
 
@@ -109,44 +107,144 @@ class ReportController {
                 $spreadsheet->setActiveSheetIndex(0);
                 $sheet = $spreadsheet->getActiveSheet();
                 $sheet->setTitle($currentDate);
-
+                $iter='';
+/*****************************************************/
                 if(count($type_lesson)+2+1>count($chars))
-                    $sheet->mergeCells('A1:A'.$chars[2+1].'1');
+                    $iter= 'A1:'.$chars[2+1].'1';
                 else
-                    $sheet->mergeCells('A1:'.$chars[count($type_lesson)+2].'1');
+                    $iter= 'A1:'.$chars[count($type_lesson)+2].'1';
+
+
+
+                $sheet->mergeCells($iter);
                 $sheet->setCellValue('A1','Фамилия, имя, отчество '. $name[1].' '.$name[0].' '. $name[2].' '.$_POST['payment_type']);
 
+/*
+                $sheet->getStyle($iter)
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+*/
+                /*****************************************/
                 $sheet->mergeCells('A3:A5');
                 $sheet->setCellValue('A3','Дата');
+                $sheet->getStyle('A3:A5')->getAlignment()->setTextRotation(90);
+
+                $sheet->getStyle('A3:A5')
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle('A3:A5')
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle('A3:A5')
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle('A3:A5')
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THIN);
+                //$sheet->getStyle('A3:A5')->getAlignment()->setWrapText(true);
 
                 $sheet->mergeCells('B3:B5');
                 $sheet->setCellValue('B3','Группа');
+                $sheet->getStyle('B3:B5')
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle('B3:B5')
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle('B3:B5')
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle('B3:B5')
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle('B3:B5')->getAlignment()->setTextRotation(90);
+                //$sheet->getStyle('B3:B5')->getAlignment()->setWrapText(true);
 
+                $iter='';
                 if(count($type_lesson)+2+1>count($chars))
-                $sheet->mergeCells('C3:A'.$chars[2+1].'3');
+                    $iter='C3:'.$chars[(count($type_lesson)+2)-count($chars)].'3';
                 else
-                    $sheet->mergeCells('C3:'.$chars[count($type_lesson)+2].'3');
+                    $iter='C3:'.$chars[count($type_lesson)+2].'3';
+
+                $sheet->mergeCells($iter);
+
                 $sheet->setCellValue('C3','Виды занятий');
 
-                $sheet->mergeCells($chars[count($type_lesson)+2].'4:'.$chars[count($type_lesson)+2].'5');
+                $sheet->getStyle($iter)
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+
+                $iter=$chars[count($type_lesson)+2].'4:'.$chars[count($type_lesson)+2].'5';
+
+                $sheet->mergeCells($iter);
+
+                $sheet->getStyle($iter)
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+
                 $sheet->setCellValue($chars[count($type_lesson)+2].'4','Итого');
+                $sheet->getStyle($iter)->getAlignment()->setTextRotation(90);
+                //$sheet->getStyle($iter)->getAlignment()->setWrapText(true);
 
-                for($i=0;$i<count($chars);$i++)
+                for($i=0;$i<count($type_lesson)+3;$i++)
                 {
-                    $sheet->setCellValue($chars[$i].'6',$i+1);
+                    if($i>1)
+                    $sheet->setCellValue($chars[$i].'6',$i-1);
+                    $sheet->getStyle($chars[$i].'6')
+                        ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                    $sheet->getStyle($chars[$i].'6')
+                        ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THICK);
+                    $sheet->getStyle($chars[$i].'6')
+                        ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                    $sheet->getStyle($chars[$i].'6')
+                        ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
                 }
+                $iter='';
 
-                if(count($type_lesson)+2>count($chars))
-                    $sheet->mergeCells('A7:A'.$chars[2].'7');
+                if(count($type_lesson)+2>=count($chars))
+                    $iter='A7:'.$chars[(count($type_lesson)+2)-count($chars)].'7';
                 else
-                    $sheet->mergeCells('A7:'.$chars[count($type_lesson)+2].'7');
+                    $iter='A7:'.$chars[count($type_lesson)+2].'7';
+
+
+                $sheet->mergeCells($iter);
+
+                $sheet->getStyle($iter)
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+
                 $sheet->setCellValue('A7',$currentDate);
 
 
                 for($j=0;$j<count($type_lesson);$j++)
                 {
-                    $sheet->mergeCells($chars[$start_index].'4:'.$chars[$start_index].'5');
+                    $iter=$chars[$start_index].'4:'.$chars[$start_index].'5';
+                    $sheet->mergeCells($iter);
                     $sheet->setCellValue($chars[$start_index].'4',$type_lesson[$j]['type_lessons']);
+                    $sheet->getStyle($iter)->getAlignment()->setTextRotation(90);
+                    $sheet->getStyle($iter)->getAlignment()->setWrapText(true);
+
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THIN);
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THIN);
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THIN);
+
                     $start_index++;
                 }
                 //заполняем данными отчет
@@ -160,21 +258,80 @@ class ReportController {
                         {
                             if($typedata!=0)
                             {
-                                $sheet->setCellValue($chars[2+$this->get_index($type_lesson,$type,'type_lessons').$start_row],
+                                if(2+$this->get_index($type_lesson,$type)>=count($chars))
+                                    $iter=$chars[(2+$this->get_index($type_lesson,$type))-count($chars)].$start_row;
+                                else
+                                    $iter=$chars[2+$this->get_index($type_lesson,$type)].$start_row;
+
+                                $sheet->setCellValue($iter,
                                     $typedata);
                             }
+                        }
+                            $iter=$chars[count($type_lesson)+2].$start_row;
+
+                        $iter2='C'.$start_row.':'.$chars[count($type_lesson)+1].$start_row;
+
+                        $sheet->setCellValue($iter,
+                            '=SUM('.$iter2.')');
+
+                        for($j=0;$j<count($type_lesson)+3;$j++) {
+                            $iter =$chars[$j] . $start_row;
+                            $sheet->getStyle($iter)
+                                ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THIN);
+                            $sheet->getStyle($iter)
+                                ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THIN);
+                            if($j==0)
+                                $sheet->getStyle($iter)
+                                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                                else
+                            $sheet->getStyle($iter)
+                                ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THIN);
+                            if($j==count($type_lesson)+2)
+                                $sheet->getStyle($iter)
+                                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+                            else
+                            $sheet->getStyle($iter)
+                                ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THIN);
                         }
                         $start_row++;
                     }
                 }
+                $iter="A".$start_row.':'."B".$start_row;
+                $sheet->mergeCells($iter);
+                $sheet->setCellValue('A'.$start_row,'Итого');
+                $sheet->getStyle($iter)
+                    ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                $sheet->getStyle($iter)
+                    ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+
+
+                for($j=0;$j<count($type_lesson)+1;$j++)
+                {
+                    $iter=$chars[$j+2].$start_row;
+                    $iter2='=Sum('.$chars[$j+2].'8:'.$chars[$j+2].($start_row-1).')';
+                    $sheet->setCellValue($iter,$iter2);
+
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getTop()->setBorderStyle(Border::BORDER_THICK);
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getBottom()->setBorderStyle(Border::BORDER_THICK);
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getLeft()->setBorderStyle(Border::BORDER_THICK);
+                    $sheet->getStyle($iter)
+                        ->getBorders()->getRight()->setBorderStyle(Border::BORDER_THICK);
+                }
+
+                foreach($sheet->getRowDimensions() as $rowID) {
+                    $rowID->setRowHeight(-1);
+                }
+
 
 
                 $writer = new Xlsx($spreadsheet);
-
-
-
-
-
 
                 ob_start();
                 $writer->save('php://output');
@@ -201,12 +358,12 @@ class ReportController {
         return $response->makeJson();
 
     }
-    private function get_index($array,$value,$key)
+    private function get_index($array,$key)
     {
         $index=0;
         foreach ($array as $k)
         {
-            if($k[$key]==$value)
+            if($k['type_lessons']==$key)
                 return $index;
             $index++;
         }
