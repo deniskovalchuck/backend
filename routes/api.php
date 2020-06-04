@@ -39,6 +39,9 @@ $router->group(['before' => 'auth'], function($router){
     $router->postController('/groups/add_students_groups', "\App\Http\Controllers\GroupController@add_students_groups");
     $router->postController('/groups/delete_student_groups', "\App\Http\Controllers\GroupController@delete_student_groups");
     $router->postController('/groups/get_all_groups', "\App\Http\Controllers\GroupController@get_all_groups");
+    $router->postController('/groups/get_all_schedule', "\App\Http\Controllers\GroupController@get_all_schedule");
+    $router->postController('/groups/delete_schedule', "\App\Http\Controllers\GroupController@delete_schedule");
+    $router->postController('/groups/add_schedule', "\App\Http\Controllers\GroupController@add_schedule");
 
     /*Lesson*/
     $router->postController('/lessons/get_id_lesson', "\App\Http\Controllers\LessonController@get_id_lesson");

@@ -22,7 +22,7 @@ class Lesson{
 
     /*return string ('Запись успешно удалена!', 'Занятия нет в базе!')*/
     public static function delete_lesson(Database $connection, $id_input_lesson){
-        $result = $connection->query('SELECT * delete_lesson(\''.$id_input_lesson.'\')');
+        $result = $connection->query('SELECT * FROM delete_lesson(\''.$id_input_lesson.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }

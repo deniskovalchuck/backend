@@ -22,6 +22,7 @@ class Groups{
         $i=0;
         while($row = pg_fetch_assoc($result)){
             $groups_array[$i] = [
+                'id'=>$row['id'],
                 'abr_group' => $row['abr_group'],
                 'year_entry_group' => $row['year_entry_group'],
                 'subgroup' => $row['subgroup'],
