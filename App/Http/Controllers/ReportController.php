@@ -480,7 +480,7 @@ class ReportController {
         for($j=0;$j<count($type_lesson)+1;$j++)
         {
             $iter=$chars[$j+2].$start_row;
-            $iter2='=Sum('.$chars[$j+2].'8:'.$chars[$j+2].($start_row-1).')';
+            $iter2='=Sum('.$chars[$j+2].'7:'.$chars[$j+2].($start_row-1).')';
             $sheet->setCellValue($iter,$iter2);
 
             $sheet->getStyle($iter)
