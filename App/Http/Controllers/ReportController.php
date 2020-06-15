@@ -26,50 +26,6 @@ class ReportController {
     public  function create_report(){
         $response = new Response();
         $teacher=null;
-      /*  if(isset($_POST['payment_type']) && isset($_POST['step3_selected_faculty'])
-            && isset($_POST['step3_selected_department'])&& isset($_POST['step3_selected_teachers'])
-            && isset($_POST['monts']) )
-        {
-            try {
-                $name=explode('#',$_POST['step3_selected_teachers']);
-                $type_lesson = Type_Lesson::get_all_type_lesson($this->link);
-                $teacher = Teacher::get_teacher_login($this->link,$name[0]
-                    , $name[1]
-                    , $name[2]
-                    , $_POST['step3_selected_faculty']
-                    , $_POST['step3_selected_department']);
-
-
-                $spreadsheet = new Spreadsheet();
-                $spreadsheet->setActiveSheetIndex(0);
-                $sheet = $spreadsheet->getActiveSheet();
-                $sheet = $this->generate_report_by_data($sheet,$type_lesson,$teacher,$name,$_POST['monts'],$_POST['payment_type']);
-
-
-                $writer = new Xlsx($spreadsheet);
-
-                ob_start();
-                $writer->save('php://output');
-                $xlsData = ob_get_contents();
-                ob_end_clean();
-                $excelOutput= 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,'.base64_encode($xlsData);
-                $response->set('file',$excelOutput);
-                $response->set('result','success');
-
-
-
-
-
-            }
-            catch (\Exception $exception)
-            {
-                $response->set('error_code',$exception->getMessage());
-            }
-        }
-        else
-        {
-            //вернуть код ошибки, что не переданы необходимые данные
-        }*/
         if(isset($_POST['payment_type']) && isset($_POST['step3_selected_faculty'])
             && isset($_POST['step3_selected_department'])&& isset($_POST['step3_selected_teachers'])
             && isset($_POST['type']) )
@@ -86,7 +42,7 @@ class ReportController {
             if($_POST['type']=='semestr')
             {
 
-                $month = $this->get_months($_POST['monts'],date("Y"));
+                $month = $this->get_months($_POST['monts'],$_POST['year']);
                 for($i=0;$i<count($month);$i++)
                 {
                     $spreadsheet->createSheet($i);
@@ -513,6 +469,7 @@ class ReportController {
             array_push($month_array, $year.'-01-01');
         }
         else {
+            $year+=1;
             array_push($month_array, $year.'-02-01');
             array_push($month_array, $year.'-03-01');
             array_push($month_array, $year.'-04-01');
