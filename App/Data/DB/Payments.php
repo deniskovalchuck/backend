@@ -12,8 +12,8 @@ class Payments{
     }
 
     /*return string ('Запись успешно удалена!', 'Записи нет в базе!')*/
-    public static function delete_payment_type(Database $connection, $input_name_payment_type, $input_coefficient){
-        $result = $connection->query('SELECT * FROM delete_payment_type(\''.$input_name_payment_type.'\','.$input_coefficient.')');
+    public static function delete_payment_type(Database $connection, $input_name_payment_type){
+        $result = $connection->query('SELECT * FROM delete_payment_type(\''.$input_name_payment_type.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
