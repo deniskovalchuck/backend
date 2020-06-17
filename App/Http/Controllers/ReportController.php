@@ -123,6 +123,7 @@ class ReportController {
                 $data[$k]=array();
                 $data[$k]['type']=$type_lesson[$i]['type_lessons'];
                 $data[$k]['date']=$report[$j]['Date'];
+                $data[$k]['num_lesson']=$report[$j]['num_lesson'];
                 $data[$k]['count_hour']=$report[$j]['count_hour'];
                 $group = Groups::get_groups_by_id($this->link,$report[$j]['id_students_groups']);
                 $data[$k]['group']=$group[0]['abr_group'].'-'.$group[0]['year_entry_group'].$group[0]['subgroup'];
@@ -139,6 +140,66 @@ class ReportController {
             //дата
             $result_data[$i]['date']=$unicle_dates[$i];
 
+
+            /********************рабочий код************************ */
+            $result_data[$i]['group']=array();
+
+            $unicle_num_lesson=array();
+            //ищем уникальные пары
+            foreach ($data as $datum) {
+
+                if(trim($datum['date'])===trim($result_data[$i]['date']))
+                {
+
+                    $exist=false;
+                    foreach($unicle_num_lesson as $item)  
+                    {
+                        if($item===$datum['num_lesson'])
+                        {
+                            $exist=true;
+                            break;
+                        }
+                    }                  
+                    if($exist==false) array_push($unicle_num_lesson,$datum['num_lesson']);
+                }
+            }
+            //идем по уникальным парам в определнный день для формирования строки с группами
+            foreach($unicle_num_lesson as $item)
+            {
+                $group_name="";
+                $type="";
+                $count_hour=0;
+                foreach ($data as $datum) {
+                    if(trim($datum['date'])===trim($result_data[$i]['date']))
+                    {
+                        if($datum['num_lesson']==$item)
+                        {
+                            $group_name.=$datum['group'].', ';
+                            $type=$datum['type'];
+                            $count_hour=$datum['count_hour'];
+                        }
+                    }
+                }
+                $group_name.=' ';
+                $group_name=str_replace(',  ','',$group_name);
+                //заполняем часы для данной строки 
+                if(!isset($result_data[$i]['group'][$group_name]))
+                {
+                    $result_data[$i]['group'][$group_name]=array();
+                    for($j=0;$j<count($type_lesson);$j++)
+                    {
+                        $result_data[$i]['group'][$group_name][$type_lesson[$j]['type_lessons']]=0;
+
+                    }
+                }
+                $result_data[$i]['group'][$group_name][$type]=$count_hour;
+
+            }
+
+            /******************рабочий код************************ */
+
+
+            /*
             $result_data[$i]['group']=array();
             foreach ($data as $datum) {
                 if(!isset($result_data[$i]['group'][$datum['group']]))
@@ -153,7 +214,7 @@ class ReportController {
                 if(trim($datum['date'])===trim($result_data[$i]['date']))
                     $result_data[$i]['group'][$datum['group']][$datum['type']]+=$datum['count_hour'];
 
-            }
+            }*/
 
         }
         //список месяцев с названиями для замены
