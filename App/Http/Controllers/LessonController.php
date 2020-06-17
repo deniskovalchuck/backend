@@ -214,7 +214,7 @@ class LessonController {
                 $data = Lesson::get_all_lessons_by_teacher($this->link,$_POST['login_input_teacher']);
                 if($data) {
                     //генерируем расписание
-                    $timetable_Data = $this->generation_timetable($data);
+                    $timetable_Data = $this->generation_timetable($data,true);
                    //перегоняем в удобный вид для клиента
                     $result=$this->gen_table_Step2($timetable_Data,"01/01/2020");
 
@@ -300,7 +300,7 @@ class LessonController {
     }
 
     //массив пар
-    private function generation_timetable($timetable_source){
+    private function generation_timetable($timetable_source,$byteacher=false){
         $timetable_data = array();
         $data = Week::get_all_week($this->link);
         if(!$data)
@@ -345,8 +345,9 @@ class LessonController {
                         {
                             foreach ($groupdata as $group)
                             {
+                                $group['year_entry_group']=  substr($group['year_entry_group'], 2);
                                 array_push($timetable_data[$item['week_day']][$item['num_lesson']][$k]['groups'],
-                                    $group['abr_group'].$group['year_entry_group'].$group['subgroup']);
+                                    $group['abr_group'].'-'.$group['year_entry_group'].$group['subgroup']);
                             }
                             //дописать получениее аудитории
                             $d = Classrooms::get_num_building_and_class_by_ID($this->link,$item['id_classroom']);
@@ -367,12 +368,16 @@ class LessonController {
                     $dat['week_day_type']=$item['week_day_type'];
                     $dat['groups']=array();
                     $dat['id_lesson']=$item['id_lesson'];
+                    if($byteacher)
+                    $dat['name_payment_type']=$item['name_payment_type'];
 
                     $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
                     if($groupdata) {
                         foreach ($groupdata as $group) {
+                            $group['year_entry_group']=  substr($group['year_entry_group'], 2);
+
                             array_push($dat['groups'],
-                                $group['abr_group'] . $group['year_entry_group'] . $group['subgroup']);
+                            $group['abr_group'].'-'.$group['year_entry_group'].$group['subgroup']);
                         }
                         $d = Classrooms::get_num_building_and_class_by_ID($this->link, $item['id_classroom']);
                         if ($d)

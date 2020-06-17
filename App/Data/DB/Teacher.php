@@ -173,6 +173,7 @@ class Teacher{
                 'Date' => $row['Date'],
                 'id_students_groups' => $row['id_students_groups'],
                 'id_type_lesson' => $row['id_type_lesson'],
+                'num_lesson' => $row['num_lesson'],
                 'count_hour' => $row['count_hour'],
             ];
             $i++;
