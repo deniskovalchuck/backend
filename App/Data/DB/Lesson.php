@@ -100,6 +100,7 @@ class Lesson{
                 'id_teachers_on_lesson' => $row['id_teachers_on_lesson'],
                 'id_subject_on_lesson' => $row['id_subject_on_lesson'],
                 'id_classroom' => $row['id_classroom'],
+                'name_payment_type' => $row['name_payment_type'],
             ];
             $i++;
         }
