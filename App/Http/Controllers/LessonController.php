@@ -345,8 +345,9 @@ class LessonController {
                         {
                             foreach ($groupdata as $group)
                             {
+                                $group['year_entry_group']=  substr($group['year_entry_group'], 2);
                                 array_push($timetable_data[$item['week_day']][$item['num_lesson']][$k]['groups'],
-                                    $group['abr_group'].$group['year_entry_group'].$group['subgroup']);
+                                    $group['abr_group'].'-'.$group['year_entry_group'].$group['subgroup']);
                             }
                             //дописать получениее аудитории
                             $d = Classrooms::get_num_building_and_class_by_ID($this->link,$item['id_classroom']);
@@ -371,8 +372,10 @@ class LessonController {
                     $groupdata= Groups::get_groups_by_id($this->link,$item['id_groups_on_lesson']);
                     if($groupdata) {
                         foreach ($groupdata as $group) {
+                            $group['year_entry_group']=  substr($group['year_entry_group'], 2);
+
                             array_push($dat['groups'],
-                                $group['abr_group'] . $group['year_entry_group'] . $group['subgroup']);
+                            $group['abr_group'].'-'.$group['year_entry_group'].$group['subgroup']);
                         }
                         $d = Classrooms::get_num_building_and_class_by_ID($this->link, $item['id_classroom']);
                         if ($d)

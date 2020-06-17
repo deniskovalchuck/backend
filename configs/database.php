@@ -10,7 +10,7 @@ return [
     //список серверов бд
     'ServerNames' => [
         'server1' => [
-            'host' => 'localhost',
+            'host' => 'server.myteh24.ru',
             'port' =>'5432',
             'database' => 'semik_univer',
             'username' => '',//если пусто - ожидать от пользователя, иначе использовать этот
