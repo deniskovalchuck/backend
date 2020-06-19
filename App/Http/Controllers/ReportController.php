@@ -194,7 +194,7 @@ class ReportController {
 
                     }
                 }
-                $result_data[$i]['group'][$group_name][$type]=$count_hour;
+                $result_data[$i]['group'][$group_name][$type]+=$count_hour;
 
             }
 
