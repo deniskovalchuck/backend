@@ -63,15 +63,15 @@ class Teacher{
     }
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
-    public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $photo_input_teacher){
-        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\',\''.$photo_input_teacher.'\')');
+    public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $photo_input_teacher, $password_teacher){
+        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\',\''.$photo_input_teacher.'\',\''.$password_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
-    public static function add_teacher_with_photo(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher){
-        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\)');
+    public static function add_teacher_with_photo(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $password_teacher){
+        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\,\''.$password_teacher.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
@@ -98,6 +98,7 @@ class Teacher{
                 'name_department_teacher' => $row['name_department_teacher'], 
                 'name_position_teacher' => $row['name_position_teacher'],
                 'photo_input_teacher' => $row['photo_input_teacher'],
+                'password_teacher' => $row['password_teacher'],
             ];
             $i++;
         }
@@ -179,5 +180,34 @@ class Teacher{
             $i++;
         }
         return $teacher_report;
+    }
+
+    public static function get_all_access_right(Database $connection){
+        $result = $connection->query('SELECT * FROM get_all_access_right()');
+        $teacher_access = array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $teacher_access[$i] = [
+                'id_access_rights' => $row['id_access_rights'],
+                'name_access_rights' => $row['name_access_rights'],
+                'access_level' => $row['access_level'],
+            ];
+            $i++;
+        }
+        return $teacher_access;
+    }
+
+    public static function get_access_rights_by_login(Database $connection, $teacher_login){
+        $result = $connection->query('SELECT * FROM get_access_rights_by_login(\''.$teacher_login.'\')');
+        $teacher_access = array();
+        $i=0;
+        while($row = pg_fetch_assoc($result)){
+            $teacher_access[$i] = [
+                'name_access_rights' => $row['name_access_rights'],
+                'access_level' => $row['access_level'],
+            ];
+            $i++;
+        }
+        return $teacher_access;
     }
 }
