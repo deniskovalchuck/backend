@@ -100,6 +100,8 @@ class TeacherController {
             && isset($_POST['name_department_input_teacher'])
             && isset($_POST['name_position_input_teacher'])
             && isset($_POST['photo_input_teacher'])
+            && isset($_POST['password'])
+            && isset($_POST['access_name'])
         )
         {
             try {
@@ -110,7 +112,9 @@ class TeacherController {
                     ,$_POST['name_faculty_input_teacher']
                     ,$_POST['name_department_input_teacher']
                     ,$_POST['name_position_input_teacher']
-                    ,$_POST['photo_input_teacher']);
+                    ,$_POST['photo_input_teacher']
+                    ,$_POST['password']
+                    ,$_POST['access_name']);
                 if(!$data)
                     $response->set('data',array());
                 else
@@ -393,4 +397,22 @@ class TeacherController {
         return $response->makeJson();
     }
 
+
+    public  function get_all_access_right(){
+        $response = new Response();
+     
+            try {
+                $data = Teacher::get_all_access_right($this->link);
+                if(!$data)
+                    $response->set('data',array());
+                else
+                    $response->set('data',$data);
+                $response->set('result','success');
+            }
+            catch (\Exception $exception)
+            {
+                $response->set('error_code',$exception->getMessage());
+            }
+        return $response->makeJson();
+    }
 }
