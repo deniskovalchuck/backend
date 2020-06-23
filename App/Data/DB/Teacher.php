@@ -18,6 +18,7 @@ class Teacher{
                 'faculty_id' => $row['id_teacher_faculty'],
                 'department_id' => $row['id_teacher_department'],
                 'position_id' => $row['id_teacher_position'],
+                'password_teacher' => $row['password_teacher'],
             ];
             $i++;
         }
