@@ -63,15 +63,15 @@ class Teacher{
     }
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
-    public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $photo_input_teacher, $password_teacher){
-        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\',\''.$photo_input_teacher.'\',\''.$password_teacher.'\')');
+    public static function add_teacher(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $photo_input_teacher, $password_teacher, $name_input_access_rights){
+        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\',\''.$photo_input_teacher.'\',\''.$password_teacher.'\', \''.$name_input_access_rights.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
 
     /*return string ('Факультета не существует!', 'Кафедры не существует!', 'Должности не существует!', 'Логин не уникален!', 'Запись уже существует!', 'Запись добавлена!')*/
-    public static function add_teacher_with_photo(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $password_teacher){
-        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\,\''.$password_teacher.'\')');
+    public static function add_teacher_with_photo(Database $connection, $name_input_teacher, $second_name_input_teacher, $third_name_input_teacher, $login_input_teacher, $name_faculty_input_teacher, $name_department_input_teacher, $name_position_input_teacher, $password_teacher, $name_input_access_rights){
+        $result = $connection->query('SELECT * FROM add_teacher(\''.$name_input_teacher.'\',\''.$second_name_input_teacher.'\',\''.$third_name_input_teacher.'\',\''.$login_input_teacher.'\',\''.$name_faculty_input_teacher.'\',\''.$name_department_input_teacher.'\',\''.$name_position_input_teacher.'\,\''.$password_teacher.'\', \''.$name_input_access_rights.'\')');
         $arr = pg_fetch_all($result);
         return $arr;
     }
