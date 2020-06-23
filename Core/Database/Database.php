@@ -23,21 +23,17 @@ class Database{
      * @param $password     - пароль пользователя
      * @return bool         - прошло подключение или нет
      */
-    public function tryConnect($nameserver,$login,$password)
+    public function tryConnect($nameserver)
     {
        $this->close();
        if($nameserver=='')
            $nameserver=Config::get('database.default_connection');
-       $host = Config::get('database.ServerNames.'.$nameserver.'.host');
-       $port = Config::get('database.ServerNames.'.$nameserver.'.port');
-       $database = Config::get('database.ServerNames.'.$nameserver.'.database');
-       $charset = Config::get('database.ServerNames.'.$nameserver.'.charset');
-
-       if($login=='' & $password=='') {
-           $login = Config::get('database.ServerNames.' . $nameserver . '.login');
-           $password = Config::get('database.ServerNames.' . $nameserver . '.password');
-       }
-
+        $host = Config::get('database.ServerNames.'.$nameserver.'.host');
+        $port = Config::get('database.ServerNames.'.$nameserver.'.port');
+        $database = Config::get('database.ServerNames.'.$nameserver.'.database');
+        $charset = Config::get('database.ServerNames.'.$nameserver.'.charset');
+        $login = Config::get('database.ServerNames.' . $nameserver . '.username');
+        $password = Config::get('database.ServerNames.' . $nameserver . '.password');
        if($this->connect($host,$port,$database,$login,$password,$charset))
        {
            return true;
