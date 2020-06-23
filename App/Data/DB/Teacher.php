@@ -124,6 +124,7 @@ class Teacher{
                 'id_faculty_teacher' => $row['id_faculty_teacher'], 
                 'id_department_teacher' => $row['id_department_teacher'], 
                 'id_position_teacher' => $row['id_position_teacher'],
+                'password_teacher' => $row['password_teacher'],
             ];
             $i++;
         }
@@ -144,6 +145,7 @@ class Teacher{
                 'name_department_teacher' => $row['name_department_teacher'], 
                 'name_position_teacher' => $row['name_position_teacher'],
                 'photo_input_teacher' => $row['photo_input_teacher'],
+                'password_teacher' => $row['password_teacher'],
             ];
             $i++;
         }
