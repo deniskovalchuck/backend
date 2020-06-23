@@ -48,4 +48,10 @@ class Subjects{
         $arr = pg_fetch_all($result);
         return $arr;
     }
+
+    public static function get_teacher_subjects_by_id(Database $connection, $id_input_subject){
+        $result = $connection->query('SELECT * FROM get_teacher_subjects_by_id('.$id_input_subject.')');
+        $arr = pg_fetch_all($result);
+        return $arr;
+    }
 }

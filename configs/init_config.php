@@ -14,6 +14,10 @@ $namespaces = array(
 
 define('middleware',array(
     'auth'=>\App\Http\Middleware\AuthMiddleware::class,
-    'ConfigDataConverter'=>\App\Http\Middleware\ConfigDataMiddleware::class
+    'ConfigDataConverter'=>\App\Http\Middleware\ConfigDataMiddleware::class,
+    'AccessLevelOne'=>\App\Http\Middleware\AccessLevelOne::class,
+    'AccessLevelTwo'=>\App\Http\Middleware\AccessLevelTwo::class,
+    'AccessLevelThree'=>\App\Http\Middleware\AccessLevelThree::class,
+    'AccessLevelFour'=>\App\Http\Middleware\AccessLevelFour::class,
 
 ));
